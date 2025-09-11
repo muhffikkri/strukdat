@@ -1,21 +1,24 @@
 #ifndef tabel_H
-#define tabel_H 
-/* Program   : */
-/* Deskripsi : */
-/* NIM/Nama  : */
-/* Tanggal   : */
+#define tabel_H
+/* Program   : tabel.h */
+/* Deskripsi : header fungsi tabel */
+/* NIM/Nama  : 24061024130069/Muhammad Fikri */
+/* Tanggal   : 11 September 2025 */
 /***********************************/
-#include <stdio.h>
+// #include <stdio.h>
 #include "boolean.h"
 
 /* type Tabel = < wadah : array[1..10] of character,
-                   size : integer > */
-/* Tabel berisi elemen karakter berupa hurf abjad kapital. */
+				   size : integer > */
+/* Tabel berisi elemen karakter berupa huruf abjad kapital. */
 /* Asumsi: indeks 0 tidak digunakan */
-typedef	struct { char wadah[11];
-                 int size; } Tabel;
+typedef struct
+{
+	char wadah[11];
+	int size;
+} Tabel;
 
-/************************KONSTRUKTOR*************************/				 
+/************************KONSTRUKTOR*************************/
 /* procedure createTable( output T: Tabel)
 	{I.S.: -}
 	{F.S.: size=0, setiap elemen wadah dengan 1 karakter spasi, spasi dianggap karakter kosong}
@@ -103,20 +106,20 @@ void viewTable(Tabel T);
 void populateTable(Tabel *T, int N);
 
 /*************************OPERASI STATISTIK*************************/
-/*function Modus (T:Tabel ) -> integer 
+/*function Modus (T:Tabel ) -> integer
 	{mengembalikan elemen pengisi T yang paling banyak muncul } */
-	/*asumsi: bila terdapat banyak yang sama maka yang diambil yang pertama*/
+/*asumsi: bila terdapat banyak yang sama maka yang diambil yang pertama*/
 int Modus(Tabel T);
 
 /*************************OPERASI RELASIONAL*************************/
-/* function IsEqualTable (T1:Tabel, T2: Table ) -> boolean 
+/* function IsEqualTable (T1:Tabel, T2: Table ) -> boolean
 	{mengembalikan true jika T1 memiliki elemen dan urutan yang sama dengan T2 } */
-boolean isEqualTable(Tabel T1, Table T2);
+boolean isEqualTable(Tabel T1, Tabel T2);
 
 /*************************OPERASI LAINNYA*************************/
-/* function getInverseTable(T:Tabel) -> Tabel 
+/* function getInverseTable(T:Tabel) -> Tabel
 	{mengembalikan tabel baru dengan isi elemen yang berkebalikan dengan tabel T } */
-Table getInverseTable(Tabel T);
+Tabel getInverseTable(Tabel T);
 
 /* procedure inverseTable(input/output T:Tabel)
 	{I.S.: T terdefinisi}
@@ -136,3 +139,5 @@ void sortAsc(Tabel *T);
 	{F.S.: elemen dalam T.wadah terurut dari huruf abjad akhir ke awal}
 	{Proses: mengurutkan elemen dalam T.wadah dari huruf abjad akhir ke awal}*/
 void sortDesc(Tabel *T);
+
+#endif
