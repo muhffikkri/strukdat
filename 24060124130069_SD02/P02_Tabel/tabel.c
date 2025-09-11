@@ -11,9 +11,11 @@
 	{Proses: menginisialisasi T} */
 void createTable(Tabel *T)
 {
+	// Kamus
 	int i = 1;
 
-	for (i; i <= 11; i++)
+	// Algoritma
+	for (i; i < 11; i++)
 	{
 		(*T).wadah[i] = ' ';
 	}
@@ -26,6 +28,9 @@ void createTable(Tabel *T)
 	{mengembalikan banyak elemen pengisi T } */
 int getSize(Tabel T)
 {
+	// Kamus
+
+	// Algoritma
 	return T.size;
 }
 
@@ -34,12 +39,18 @@ int getSize(Tabel T)
 	{mengembalikan True jika T kosong } */
 boolean isEmptyTable(Tabel T)
 {
+	// Kamus
+
+	// Algoritma
 	return getSize(T) == 0;
 }
 /* function isFullTable( T: Tabel) -> boolean
 	{mengembalikan True jika T penuh } */
 boolean isFullTable(Tabel T)
 {
+	// Kamus
+
+	// Algoritma
 	return getSize(T) == 10;
 }
 
@@ -50,7 +61,10 @@ boolean isFullTable(Tabel T)
 	{Proses: mencari elemen bernilai x dalam T.wadah} */
 void searchX(Tabel T, char x, int *pos)
 {
+	// Kamus
 	int i = 1;
+
+	// Algoritma
 	if (isEmptyTable(T))
 	{
 		(*pos) = -999;
@@ -77,9 +91,11 @@ void searchX(Tabel T, char x, int *pos)
 	{mengembalikan banyaknya elemen bernilai X dalam T.wadah} */
 int countX(Tabel T, char x)
 {
+	// Kamus
 	int i = 1;
 	int count = 0;
 
+	// Algoritma
 	if (isEmptyTable(T))
 	{
 		return count;
@@ -101,9 +117,11 @@ int countX(Tabel T, char x)
 	{mengembalikan banyak elemen T yang berupa karakter huruf vocal } */
 int countVocal(Tabel T)
 {
+	// Kamus
 	int i = 1;
 	int count = 0;
 
+	// Algoritma
 	if (isEmptyTable(T))
 	{
 		return count;
@@ -133,6 +151,9 @@ int countVocal(Tabel T)
 */
 void addXTable(Tabel *T, char x)
 {
+	// Kamus
+
+	// Algoritma
 	if (!isFullTable((*T)))
 	{
 		(*T).wadah[(getSize((*T))) + 1] = x;
@@ -147,9 +168,11 @@ void addXTable(Tabel *T, char x)
 	*/
 void addUniqueXTable(Tabel *T, char x)
 {
+	// Kamus
 	int i = 1;
 
-	if (!isFullTable((*T)))
+	// Algoritma
+	if (!(isFullTable((*T))))
 	{
 		while (i <= getSize((*T)) && (*T).wadah[i] != x)
 		{
@@ -158,8 +181,8 @@ void addUniqueXTable(Tabel *T, char x)
 
 		if (!(i <= getSize((*T))))
 		{
-			(*T).wadah[(getSize((*T))) + 1] = x;
-			(*T).size = getSize((*T)) + 1;
+			(*T).wadah[i] = x;
+			(*T).size = i;
 		}
 	}
 }
@@ -170,8 +193,10 @@ void addUniqueXTable(Tabel *T, char x)
 	{Proses: menghapus 1 elemen bernilai x, geser semua elemen sisa}*/
 void delXTable(Tabel *T, char x)
 {
+	// Kamus
 	int i = 1;
 
+	// Algoritma
 	if (!(isEmptyTable(*T)))
 	{
 		while (i <= getSize((*T)) && (*T).wadah[i] != x)
@@ -199,6 +224,9 @@ void delXTable(Tabel *T, char x)
 	{Proses: menghapus 1 elemen pada posisi idx, geser semua elemen sisa}*/
 void delTable(Tabel *T, int idx)
 {
+	// Kamus
+
+	// Algoritma
 	if (!(isEmptyTable((*T))))
 	{
 		(*T).wadah[idx] = ' ';
@@ -218,23 +246,26 @@ void delTable(Tabel *T, int idx)
 	{Proses: menghapus semua elemen bernilai X, geser elemen sisa}*/
 void delAllXTable(Tabel *T, char x)
 {
+	// Kamus
 	int i, j = 1;
-	if (!(isEmptyTable((*T))))
+
+	// Algoritma
+	if (!(isEmptyTable(*T)))
 	{
-		for (i; i <= getSize((*T)); i++)
+		for (i = 1; i <= getSize(*T); i++)
 		{
-			if ((*T).wadah[i] == x)
+			if ((*T).wadah[i] != x)
 			{
-				(*T).wadah[i] = ' ';
+				(*T).wadah[j] = (*T).wadah[i];
+				j++;
 			}
 		}
-
-		for (j; j < getSize((*T)); j++)
+		(*T).size = j - 1;
+		while (j <= 10)
 		{
-			(*T).wadah[j] = (*T).wadah[j + 1];
+			(*T).wadah[j] = ' ';
+			j++;
 		}
-
-		(*T).size = getSize((*T)) - i;
 	}
 }
 
@@ -245,10 +276,12 @@ void delAllXTable(Tabel *T, char x)
 	{Proses: menampilkan semua elemen T ke layar} */
 void printTable(Tabel T)
 {
+	// Kamus
 	int i = 1;
-	for (i; i < 11; i++)
+	// Algoritma
+	for (i; i <= 10; i++)
 	{
-		printf("%c", &T.wadah[i]);
+		printf("%c", T.wadah[i]);
 	}
 }
 
@@ -258,10 +291,12 @@ void printTable(Tabel T)
 	{Proses: menampilkan elemen T yang terisi ke layar} */
 void viewTable(Tabel T)
 {
+	// Kamus
 	int i = 1;
-	for (i; i < getSize(T); i++)
+	// Algoritma
+	for (i; i <= getSize(T); i++)
 	{
-		printf("%c", &T.wadah[i]);
+		printf("%c", T.wadah[i]);
 	}
 }
 
@@ -272,12 +307,19 @@ void viewTable(Tabel T)
 	{Syarat: angka-angka masukan keyboard > 0 }*/
 void populateTable(Tabel *T, int N)
 {
-	if (!(isEmptyTable((*T))))
+	// Kamus
+	int i = 1;
+
+	// Algoritma
+	if (!(isFullTable((*T))))
 	{
-		// for (N; N != 0; N--)
-		// {
-		// 	scanf((*T));
-		// }
+		(*T).size = N;
+		while (N > 0)
+		{
+			scanf(" %c", &((*T).wadah[i]));
+			i++;
+			N--;
+		}
 	}
 }
 
@@ -287,33 +329,148 @@ void populateTable(Tabel *T, int N)
 /*asumsi: bila terdapat banyak yang sama maka yang diambil yang pertama*/
 int Modus(Tabel T)
 {
+	// Kamus
+	int idx, count = 0, freq = 0, i = 0;
+
+	// Algoritma
+	if (!isEmptyTable(T))
+	{
+		for (i; i <= getSize(T); i++)
+		{
+			count = countX(T, T.wadah[i]);
+			if (count > freq)
+			{
+				freq = count;
+				idx = i;
+			}
+		}
+		return T.wadah[idx];
+	}
+	else
+	{
+		return ' ';
+	}
 }
 
 /*************************OPERASI RELASIONAL*************************/
 /* function IsEqualTable (T1:Tabel, T2: Table ) -> boolean
 	{mengembalikan true jika T1 memiliki elemen dan urutan yang sama dengan T2 } */
-boolean isEqualTable(Tabel T1, Tabel T2);
+boolean isEqualTable(Tabel T1, Tabel T2)
+{
+	// Kamus
+	int i = 1;
+
+	// Algoritma
+	if (getSize(T1) == getSize(T2))
+	{
+		if (isEmptyTable(T1))
+		{
+			return true;
+		}
+		else
+		{
+
+			while (i <= getSize(T1))
+			{
+				if (T1.wadah[i] != T2.wadah[i])
+					return false;
+				i++;
+			}
+			return true;
+		}
+	}
+	else
+	{
+		return false;
+	}
+}
 
 /*************************OPERASI LAINNYA*************************/
 /* function getInverseTable(T:Tabel) -> Tabel
 	{mengembalikan tabel baru dengan isi elemen yang berkebalikan dengan tabel T } */
-Tabel getInverseTable(Tabel T);
+Tabel getInverseTable(Tabel T)
+{
+	// Kamus
+	Tabel Tout;
+	int i = 1;
+
+	// Algoritma
+	createTable(&Tout);
+
+	for (i; i <= getSize(T); i++)
+	{
+		Tout.wadah[getSize(T) - i + 1] = T.wadah[i];
+	}
+	Tout.size = getSize(T);
+	return Tout;
+}
 
 /* procedure inverseTable(input/output T:Tabel)
 	{I.S.: T terdefinisi}
 	{F.S.: elemen dalam T.wadah memiliki isi berkabalikan dengan isi tabel semula}
 	{Proses: membalik isi elemen pada tabel T}*/
-void inverseTable(Tabel *T);
+void inverseTable(Tabel *T)
+{
+	// Kamus
+	int i = 1;
+	char temp = ' ';
+
+	// Algoritma
+	for (i; i <= getSize((*T)) / 2; i++)
+	{
+		temp = (*T).wadah[getSize((*T)) - i + 1];
+		(*T).wadah[getSize((*T)) - i + 1] = (*T).wadah[i];
+		(*T).wadah[i] = temp;
+	}
+}
 
 /*************************OPERASI PENGURUTAN*************************/
 /* procedure SortAsc ( input/output T:Tabel)
 	{I.S.: T terdefinisi}
 	{F.S.: elemen dalam T.wadah terurut dari huruf abjad awal ke akhir}
 	{Proses: mengurutkan elemen dalam T.wadah dari huruf abjad awal ke akhir}*/
-void sortAsc(Tabel *T);
+void sortAsc(Tabel *T)
+{
+	// Kamus
+	int i = 2;
+	int j;
+	char key = ' ';
+
+	// Algoritma
+	for (i; i <= getSize((*T)); i++)
+	{
+		key = (*T).wadah[i];
+		j = i - 1;
+		while (j >= 1 && ((*T).wadah[j] > key))
+		{
+			(*T).wadah[j + 1] = (*T).wadah[j];
+			j--;
+		}
+		(*T).wadah[j + 1] = key;
+	}
+}
 
 /* procedure SortDesc ( input/output T:Tabel)
 	{I.S.: T terdefinisi}
 	{F.S.: elemen dalam T.wadah terurut dari huruf abjad akhir ke awal}
 	{Proses: mengurutkan elemen dalam T.wadah dari huruf abjad akhir ke awal}*/
-void sortDesc(Tabel *T);
+void sortDesc(Tabel *T)
+{
+	// Kamus
+	int i = 2;
+	int j;
+	char key = ' ';
+
+	// Algoritma
+	for (i; i <= getSize((*T)); i++)
+	{
+		key = (*T).wadah[i];
+		j = i - 1;
+		while (j >= 1 && ((*T).wadah[j] < key))
+		{
+			(*T).wadah[j + 1] = (*T).wadah[j];
+			j--;
+		}
+		(*T).wadah[j + 1] = key;
+	}
+}
