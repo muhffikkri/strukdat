@@ -1,5 +1,5 @@
 #ifndef matriks_H
-#define matriks_H 
+#define matriks_H
 
 /* Program   : matriks.h */
 /* Deskripsi : file HEADER modul matriks integer */
@@ -7,17 +7,20 @@
 /* Tanggal   : */
 /***********************************/
 
-#include "boolean.h"  //salin dari praktikum lalu
+#include "boolean.h" //salin dari praktikum lalu
 
-/* type Matriks = < cell: array[1…10] of array[1…10] of integer, 
-				    nbaris: integer, 
+/* type Matriks = < cell: array[1…10] of array[1…10] of integer,
+					nbaris: integer,
 					nkolom: integer > */
 /* asumsi: indeks 0 tidak digunakan */
-typedef	struct { int cell[11][11];
-                 int nbaris;
-				 int nkolom; } Matriks;
+typedef struct
+{
+	int cell[11][11];
+	int nbaris;
+	int nkolom;
+} Matriks;
 
-/* KONSTRUKTOR */		
+/* KONSTRUKTOR */
 /* procedure initMatriks(output M: Matriks)
 	{I.S.: - }
 	{F.S.: Matriks M terdefinisi}
@@ -47,13 +50,13 @@ boolean isFullMatriks(Matriks M);
 	{I.S.: M terdefinisi, X terdefinisi }
 	{F.S.: isi M.cell bertambah 1 elemen pada baris ke-row dan kolom ke-col jika belum penuh}
 	{Proses: mengisi elemen M.cell dengan nilai X} */
-void addX (Matriks *M, int X, int row, int col);
+void addX(Matriks *M, int X, int row, int col);
 
 /* procedure delX (input/output M:Matriks, input X:integer )
 	{I.S.: M terdefinisi, X terdefinisi}
 	{F.S.: elemen M.cell berkurang 1}
 	{Proses: menghapus 1 elemen bernilai X dari M.cell*/
-void delX (Matriks *M, int X);
+void delX(Matriks *M, int X);
 
 /* procedure isiMatriksRandom(input/output M: Matriks, input x: integer, input y: integer)
 	{I.S.: M terdefinisi}
@@ -84,7 +87,7 @@ void printMatriks(Matriks M);
 	{I.S.: M terdefinisi}
 	{F.S.: -}
 	{Proses: menampilkan elemen M.cell yang terisi ke layar} */
-void viewMatriks (Matriks M);
+void viewMatriks(Matriks M);
 
 /* OPERASI ARITMATIKA */
 /* function addMatriks(M1,M2: Matriks) -> Matriks
@@ -139,4 +142,6 @@ void searchX(Matriks M, int X, int *row, int *col);
 
 /* function countX (M:Matriks, X: integer) -> integer
 	{mengembalikan banyaknya elemen bernilai X dalam M.cell} */
-int countX (Matriks M, int X);
+int countX(Matriks M, int X);
+
+#endif
