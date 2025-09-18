@@ -3,8 +3,8 @@
 
 /* Program   : matriks.h */
 /* Deskripsi : file HEADER modul matriks integer */
-/* NIM/Nama  : */
-/* Tanggal   : */
+/* NIM/Nama  : 24060124130069/Muhammad Fikri*/
+/* Tanggal   : 18 September 2025*/
 /***********************************/
 
 #include "boolean.h" //salin dari praktikum lalu
