@@ -6,7 +6,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
 #include "matriks.h"
 #include "boolean.h"
 
@@ -17,40 +16,34 @@ int main()
     Matriks M1, M2, M3, K;
     int row, col, count;
 
-    // Inisialisasi semua matriks sekali di awal
     initMatriks(&M1);
     initMatriks(&M2);
     initMatriks(&M3);
     initMatriks(&K);
 
-    // Seed untuk random
-    srand(time(NULL));
-
     printf("1. TEST KONSTRUKTOR - initMatriks()\n");
-    printf("   M1.nbaris: %d, M1.nkolom: %d\n", M1.nbaris, M1.nkolom);
+    printf("   M1.nbaris: %d, M1.nkolom: %d\n", getNBaris(M1), getNKolom(M1));
     printf("   M1.cell[1][1]: %d (should be -999)\n", M1.cell[1][1]);
-    printf("   Status: %s\n\n", (M1.nbaris == 0 && M1.nkolom == 0 && M1.cell[1][1] == -999) ? "PASSED" : "FAILED");
+    printf("   Status: %s\n\n", (getNBaris(M1) == 0 && getNKolom(M1) == 0 && M1.cell[1][1] == -999) ? "PASSED" : "FAILED");
 
     printf("2. TEST SELEKTOR - getNBaris() dan getNKolom()\n");
-    M1.nbaris = 3;
-    M1.nkolom = 4;
-    printf("   getNBaris(M1): %d (expected: 3)\n", getNBaris(M1));
-    printf("   getNKolom(M1): %d (expected: 4)\n", getNKolom(M1));
-    printf("   Status: %s\n\n", (getNBaris(M1) == 3 && getNKolom(M1) == 4) ? "PASSED" : "FAILED");
+    addX(&M1, 1, 3, 4); // Ini akan menambah 1 baris dan 1 kolom terisi
+    printf("   getNBaris(M1): %d (expected: 1)\n", getNBaris(M1));
+    printf("   getNKolom(M1): %d (expected: 1)\n", getNKolom(M1));
+    printf("   Status: %s\n\n", (getNBaris(M1) == 1 && getNKolom(M1) == 1) ? "PASSED" : "FAILED");
 
     printf("3. TEST PREDIKAT - isEmptyMatriks() dan isFullMatriks()\n");
-    M1.nbaris = 0;
-    M1.nkolom = 0;
-    M2.nbaris = 11;
-    M2.nkolom = 11;
+    // Reset M1 untuk test empty
+    initMatriks(&M1);
+    // Setup M2 untuk test full - menggunakan isiMatriksIdentitas
+    isiMatriksIdentitas(&M2, 11);
     printf("   isEmptyMatriks(M1): %s (should be true)\n", isEmptyMatriks(M1) ? "true" : "false");
     printf("   isFullMatriks(M2): %s (should be true)\n", isFullMatriks(M2) ? "true" : "false");
     printf("   Status: %s\n\n", (isEmptyMatriks(M1) && isFullMatriks(M2)) ? "PASSED" : "FAILED");
 
     printf("4. TEST MUTATOR - addX()\n");
-    // Reset M1 untuk test mutator
-    M1.nbaris = 0;
-    M1.nkolom = 0;
+    // Reset M1 untuk test mutator dengan cara yang proper
+    initMatriks(&M1);
     addX(&M1, 10, 1, 1);
     addX(&M1, 20, 1, 2);
     addX(&M1, 30, 2, 1);
@@ -64,10 +57,18 @@ int main()
     printf("   Setelah delX(20), M1[1][2]: %d (should be -999)\n", M1.cell[1][2]);
     printf("   Status: %s\n\n", (M1.cell[1][2] == -999) ? "PASSED" : "FAILED");
 
+    printf("5b. TEST SEMANTIK - isEmpty setelah menghapus semua elemen\n");
+    // Hapus semua elemen untuk test isEmpty
+    delX(&M1, 10); // Hapus elemen [1][1]
+    delX(&M1, 30); // Hapus elemen [2][1]
+    printf("   Debug - Matrix setelah delX:\n");
+    viewMatriks(M1);
+    printf("   nbaris=%d, nkolom=%d\n", getNBaris(M1), getNKolom(M1));
+    printf("   Setelah menghapus semua elemen, isEmptyMatriks(M1): %s\n", isEmptyMatriks(M1) ? "true" : "false");
+    printf("   Status: %s\n\n", isEmptyMatriks(M1) ? "PASSED" : "FAILED");
+
     printf("6. TEST I/O - isiMatriksRandom()\n");
     isiMatriksRandom(&M2, 2, 2);
-    M2.nbaris = 2;
-    M2.nkolom = 2;
     printf("   Random matrix 2x2 created\n");
     printf("   M2[1][1]: %d, M2[2][2]: %d\n", M2.cell[1][1], M2.cell[2][2]);
     printf("   Status: PASSED (random values generated)\n\n");
@@ -85,27 +86,34 @@ int main()
     viewMatriks(M3);
     printf("   Status: PASSED (matrix displayed)\n\n");
 
-    printf("9. TEST ARITHMETIC - Setup test matrices\n");
-    // Setup M1 dan M2 untuk arithmetic operations
-    M1.cell[1][1] = 1;
-    M1.cell[1][2] = 2;
-    M1.cell[2][1] = 3;
-    M1.cell[2][2] = 4;
-    M1.nbaris = 2;
-    M1.nkolom = 2;
+    printf("8b. TEST SEMANTIK - Manipulasi matriks identitas\n");
+    // Test manipulasi pada matriks identitas
+    printf("   Original identity matrix dimensions: %dx%d\n", getNBaris(M3), getNKolom(M3));
+    // Tambah elemen di luar diagonal untuk merusak identitas
+    addX(&M3, 99, 1, 2);
+    printf("   Setelah addX(99, 1, 2), M3[1][2]: %d\n", M3.cell[1][2]);
+    // Hapus elemen diagonal untuk test
+    delX(&M3, 1);
+    printf("   Setelah delX(1), matrix bukan lagi identitas\n");
+    printf("   Status: PASSED (semantic manipulation)\n\n");
 
-    M2.cell[1][1] = 5;
-    M2.cell[1][2] = 6;
-    M2.cell[2][1] = 7;
-    M2.cell[2][2] = 8;
-    M2.nbaris = 2;
-    M2.nkolom = 2;
+    printf("9. TEST ARITHMETIC - Setup test matrices\n");
+    // Setup M1 dan M2 untuk arithmetic operations menggunakan addX
+    initMatriks(&M1);
+    addX(&M1, 1, 1, 1);
+    addX(&M1, 2, 1, 2);
+    addX(&M1, 3, 2, 1);
+    addX(&M1, 4, 2, 2);
+
+    initMatriks(&M2);
+    addX(&M2, 5, 1, 1);
+    addX(&M2, 6, 1, 2);
+    addX(&M2, 7, 2, 1);
+    addX(&M2, 8, 2, 2);
     printf("   Test matrices prepared\n\n");
 
     printf("10. TEST ARITHMETIC - addMatriks()\n");
     M3 = addMatriks(M1, M2);
-    M3.nbaris = 2;
-    M3.nkolom = 2;
     printf("   M1 + M2:\n");
     viewMatriks(M3);
     printf("   Expected: 6 8 / 10 12\n");
@@ -113,8 +121,6 @@ int main()
 
     printf("11. TEST ARITHMETIC - subMatriks()\n");
     M3 = subMatriks(M2, M1);
-    M3.nbaris = 2;
-    M3.nkolom = 2;
     printf("   M2 - M1:\n");
     viewMatriks(M3);
     printf("   Expected: 4 4 / 4 4\n");
@@ -122,8 +128,6 @@ int main()
 
     printf("12. TEST ARITHMETIC - kaliSkalarMatriks()\n");
     M3 = kaliSkalarMatriks(M1, 3);
-    M3.nbaris = 2;
-    M3.nkolom = 2;
     printf("   M1 * 3:\n");
     viewMatriks(M3);
     printf("   Expected: 3 6 / 9 12\n");
@@ -142,13 +146,12 @@ int main()
     printf("   Status: %s\n\n", (M3.cell[1][2] == 3 && M3.cell[2][1] == 2) ? "PASSED" : "FAILED");
 
     printf("15. TEST TRANSPOSE - transposeMatriks() (in-place)\n");
-    // Use a copy of M1 for in-place transpose
-    M3.cell[1][1] = 1;
-    M3.cell[1][2] = 2;
-    M3.cell[2][1] = 3;
-    M3.cell[2][2] = 4;
-    M3.nbaris = 2;
-    M3.nkolom = 2;
+    // Use a copy of M1 for in-place transpose dengan cara yang proper
+    initMatriks(&M3);
+    addX(&M3, 1, 1, 1);
+    addX(&M3, 2, 1, 2);
+    addX(&M3, 3, 2, 1);
+    addX(&M3, 4, 2, 2);
     transposeMatriks(&M3);
     printf("   After in-place transpose:\n");
     viewMatriks(M3);
@@ -161,25 +164,24 @@ int main()
     printf("   Status: PASSED (padding added)\n\n");
 
     printf("17. TEST ADVANCED - Setup 4x4 matrix for pooling\n");
-    // Setup M1 as 4x4 matrix
-    M1.cell[1][1] = 1;
-    M1.cell[1][2] = 2;
-    M1.cell[1][3] = 3;
-    M1.cell[1][4] = 4;
-    M1.cell[2][1] = 5;
-    M1.cell[2][2] = 6;
-    M1.cell[2][3] = 7;
-    M1.cell[2][4] = 8;
-    M1.cell[3][1] = 9;
-    M1.cell[3][2] = 10;
-    M1.cell[3][3] = 11;
-    M1.cell[3][4] = 12;
-    M1.cell[4][1] = 13;
-    M1.cell[4][2] = 14;
-    M1.cell[4][3] = 15;
-    M1.cell[4][4] = 16;
-    M1.nbaris = 4;
-    M1.nkolom = 4;
+    // Setup M1 as 4x4 matrix menggunakan addX
+    initMatriks(&M1);
+    addX(&M1, 1, 1, 1);
+    addX(&M1, 2, 1, 2);
+    addX(&M1, 3, 1, 3);
+    addX(&M1, 4, 1, 4);
+    addX(&M1, 5, 2, 1);
+    addX(&M1, 6, 2, 2);
+    addX(&M1, 7, 2, 3);
+    addX(&M1, 8, 2, 4);
+    addX(&M1, 9, 3, 1);
+    addX(&M1, 10, 3, 2);
+    addX(&M1, 11, 3, 3);
+    addX(&M1, 12, 3, 4);
+    addX(&M1, 13, 4, 1);
+    addX(&M1, 14, 4, 2);
+    addX(&M1, 15, 4, 3);
+    addX(&M1, 16, 4, 4);
     printf("   4x4 matrix prepared for pooling tests\n\n");
 
     printf("18. TEST ADVANCED - maxPooling()\n");
@@ -197,30 +199,29 @@ int main()
     printf("   Status: PASSED (averages calculated)\n\n");
 
     printf("20. TEST ADVANCED - conv()\n");
-    // Setup kernel
-    K.cell[1][1] = 1;
-    K.cell[1][2] = 0;
-    K.cell[1][3] = -1;
-    K.cell[2][1] = 1;
-    K.cell[2][2] = 0;
-    K.cell[2][3] = -1;
-    K.cell[3][1] = 1;
-    K.cell[3][2] = 0;
-    K.cell[3][3] = -1;
-    K.nbaris = 3;
-    K.nkolom = 3;
+    // Setup kernel menggunakan addX
+    initMatriks(&K);
+    addX(&K, 1, 1, 1);
+    addX(&K, 0, 1, 2);
+    addX(&K, -1, 1, 3);
+    addX(&K, 1, 2, 1);
+    addX(&K, 0, 2, 2);
+    addX(&K, -1, 2, 3);
+    addX(&K, 1, 3, 1);
+    addX(&K, 0, 3, 2);
+    addX(&K, -1, 3, 3);
     M2 = conv(M1, K);
     printf("   Convolution result:\n");
     viewMatriks(M2);
     printf("   Status: PASSED (convolution computed)\n\n");
 
     printf("21. TEST SEARCH - Setup search matrix\n");
-    M1.cell[1][1] = 10;
-    M1.cell[1][2] = 20;
-    M1.cell[2][1] = 30;
-    M1.cell[2][2] = 10;
-    M1.nbaris = 2;
-    M1.nkolom = 2;
+    // Setup search matrix menggunakan addX
+    initMatriks(&M1);
+    addX(&M1, 10, 1, 1);
+    addX(&M1, 20, 1, 2);
+    addX(&M1, 30, 2, 1);
+    addX(&M1, 10, 2, 2); // Duplicate 10 untuk test count
     printf("   Search matrix prepared\n\n");
 
     printf("22. TEST SEARCH - searchX()\n");
@@ -237,6 +238,50 @@ int main()
     searchX(M1, 99, &row, &col);
     printf("   Searching for 99 (not exist): [%d][%d]\n", row, col);
     printf("   Status: %s\n\n", (row == -999 && col == -999) ? "PASSED" : "FAILED");
+
+    printf("25. TEST SEMANTIK - Kombinasi operasi kompleks\n");
+    // Test kombinasi berbagai operasi dengan cara semantik
+    printf("   a) Buat matriks random 3x3\n");
+    isiMatriksRandom(&M1, 3, 3);
+    printf("      Matrix dimensions: %dx%d\n", getNBaris(M1), getNKolom(M1));
+
+    printf("   b) Buat matriks identitas 3x3\n");
+    isiMatriksIdentitas(&M2, 3);
+    printf("      Identity dimensions: %dx%d\n", getNBaris(M2), getNKolom(M2));
+
+    printf("   c) Penjumlahan matriks random + identitas\n");
+    M3 = addMatriks(M1, M2);
+    printf("      Result dimensions: %dx%d\n", getNBaris(M3), getNKolom(M3));
+
+    printf("   d) Transpose hasil penjumlahan\n");
+    Matriks M_transposed = getTransposeMatriks(M3);
+    printf("      Transposed dimensions: %dx%d\n", getNBaris(M_transposed), getNKolom(M_transposed));
+
+    printf("   Status: PASSED (complex semantic operations)\n\n");
+
+    printf("26. TEST SEMANTIK - Matrix pooling semantik\n");
+    // Setup matriks yang sesuai untuk pooling
+    printf("   Setup matriks 4x4 untuk pooling semantik\n");
+    initMatriks(&M1);
+    // Isi dengan pola yang mudah diverifikasi
+    int val = 1;
+    for (int i = 1; i <= 4; i++)
+    {
+        for (int j = 1; j <= 4; j++)
+        {
+            addX(&M1, val++, i, j);
+        }
+    }
+
+    printf("   Original matrix dimensions: %dx%d\n", getNBaris(M1), getNKolom(M1));
+
+    M2 = maxPooling(M1, 2);
+    printf("   Max pooling result dimensions: %dx%d\n", getNBaris(M2), getNKolom(M2));
+
+    M3 = avgPooling(M1, 2);
+    printf("   Avg pooling result dimensions: %dx%d\n", getNBaris(M3), getNKolom(M3));
+
+    printf("   Status: PASSED (semantic pooling operations)\n\n");
 
     printf("=== SEMUA TEST SELESAI ===\n");
     printf("Semua fungsi dasar telah diuji!\n");
