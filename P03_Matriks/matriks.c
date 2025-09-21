@@ -21,9 +21,9 @@ void initMatriks(Matriks *M)
     int i, j;
 
     // Algoritma
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
             (*M).cell[i][j] = -999;
         }
@@ -79,60 +79,53 @@ boolean isFullMatriks(Matriks M)
 /* procedure addX (input/output M:Matriks, input X:integer, row:integer, col:integer)
     {I.S.: M terdefinisi, X terdefinisi }
     {F.S.: isi M.cell bertambah 1 elemen pada baris ke-row dan kolom ke-col jika belum penuh}
-    {Proses: mengisi elemen M.cell dengan nilai X}
-    {nbaris dan nkolom dihitung berdasarkan JUMLAH baris/kolom yang terisi:
-     - nbaris = jumlah baris yang memiliki minimal 1 elemen valid (bukan -999)
-     - nkolom = jumlah kolom yang memiliki minimal 1 elemen valid (bukan -999)
-     Contoh: elemen di [1][1] dan [9][9] → nbaris=2, nkolom=2} */
+    {Proses: mengisi elemen M.cell dengan nilai X} */
 void addX(Matriks *M, int X, int row, int col)
 {
     // Kamus
-    int i, j;
-    int countBaris = 0, countKolom = 0;
-    boolean barisAda[12] = {false}; // index 0 tidak dipakai
-    boolean kolomAda[12] = {false}; // index 0 tidak dipakai
+    int i;
+    int count;
 
     // Algoritma
     if (!isFullMatriks((*M)) && ((*M).cell[row][col] == -999))
     {
-        (*M).cell[row][col] = X;
-
-        // Hitung ulang nbaris dan nkolom berdasarkan baris/kolom yang terisi
-        // Reset array penanda
-        for (i = 0; i <= 11; i++)
+        i = 1;
+        count = 0;
+        while (i <= 10 && count == 0)
         {
-            barisAda[i] = false;
-            kolomAda[i] = false;
-        }
-
-        // Scan seluruh matriks untuk menandai baris/kolom yang terisi
-        for (i = 1; i <= 11; i++)
-        {
-            for (j = 1; j <= 11; j++)
+            if ((*M).cell[row][i] != -999)
             {
-                if ((*M).cell[i][j] != -999)
-                {
-                    barisAda[i] = true;
-                    kolomAda[j] = true;
-                }
+                count++;
             }
+            i++;
         }
 
-        // Hitung jumlah baris dan kolom yang terisi
-        countBaris = 0;
-        countKolom = 0;
-        for (i = 1; i <= 11; i++)
+        if (count == 0)
         {
-            if (barisAda[i])
-                countBaris++;
-            if (kolomAda[i])
-                countKolom++;
+            (*M).nkolom = getNKolom(*M) + 1;
         }
 
-        (*M).nbaris = countBaris;
-        (*M).nkolom = countKolom;
+        i = 1;
+        count = 0;
+        while (i <= 10 && count == 0)
+        {
+            if ((*M).cell[i][col] != -999)
+            {
+                count++;
+            }
+            i++;
+        }
+
+        if (count == 0)
+        {
+            (*M).nbaris = getNBaris(*M) + 1;
+        }
+
+        (*M).cell[row][col] = X;
     }
-} /* procedure delX (input/output M:Matriks, input X:integer )
+}
+
+/* procedure delX (input/output M:Matriks, input X:integer )
      {I.S.: M terdefinisi, X terdefinisi}
      {F.S.: elemen M.cell berkurang 1}
      {Proses: menghapus 1 elemen bernilai X dari M.cell*/
@@ -141,88 +134,95 @@ void delX(Matriks *M, int X)
     // Kamus
     int i, j;
     int delCol, delRow;
+    int count = 0;
+    int found = -999;
 
     // Algoritma
-    i = 1;
-
-    while (i <= 11 && !isEmptyMatriks(*M))
+    if (!isEmptyMatriks(*M))
     {
+        i = 1;
         j = 1;
-        while (j <= 11)
+        while (i <= 10 && found == -999)
         {
-            if ((*M).cell[i][j] == X)
+            j = 1;
+            while (j <= 10 && found == -999)
             {
-                delRow = i;
-                delCol = j;
-                (*M).cell[delRow][delCol] = -999;
-
-                // Recalculate matrix dimensions - hitung jumlah baris/kolom terisi
-                int countBaris = 0, countKolom = 0;
-                boolean barisAda[12] = {false}; // index 0 tidak dipakai
-                boolean kolomAda[12] = {false}; // index 0 tidak dipakai
-                int k, l;
-
-                // Reset array penanda
-                for (k = 0; k <= 11; k++)
+                if ((*M).cell[i][j] == X)
                 {
-                    barisAda[k] = false;
-                    kolomAda[k] = false;
+                    found = (*M).cell[i][j];
                 }
+                j++;
+            }
+            i++;
+        }
 
-                // Scan seluruh matriks untuk menandai baris/kolom yang terisi
-                for (k = 1; k <= 11; k++)
-                {
-                    for (l = 1; l <= 11; l++)
-                    {
-                        if ((*M).cell[k][l] != -999)
-                        {
-                            barisAda[k] = true;
-                            kolomAda[l] = true;
-                        }
-                    }
-                }
+        delRow = i - 1;
+        delCol = j - 1;
 
-                // Hitung jumlah baris dan kolom yang terisi
-                for (k = 1; k <= 11; k++)
-                {
-                    if (barisAda[k])
-                        countBaris++;
-                    if (kolomAda[k])
-                        countKolom++;
-                }
+        if (i <= 10 && j <= 10)
+        {
+            (*M).cell[delRow][delCol] = -999;
+        }
 
-                (*M).nbaris = countBaris;
-                (*M).nkolom = countKolom;
-                return;
+        count = 0;
+        j = 1;
+        while (j <= 10 && count == 0)
+        {
+            if ((*M).cell[delRow][j] != -999)
+            {
+                count++;
             }
             j++;
         }
-        i++;
+
+        if (count == 0)
+        {
+            (*M).nbaris = getNBaris(*M) - 1;
+        }
+
+        count = 0;
+        i = 1;
+        while (i <= 10 && count == 0)
+        {
+            if ((*M).cell[i][delCol] != -999)
+            {
+                count++;
+            }
+            i++;
+        }
+
+        if (count == 0)
+        {
+            (*M).nkolom = getNKolom(*M) - 1;
+        }
     }
-} /* procedure isiMatriksRandom(input/output M: Matriks, input x: integer, input y: integer)
-     {I.S.: M terdefinisi}
-     {F.S.: M terisi dengan bilangan random sejumlah x baris dan y kolom, nbaris=x, nkolom=y}
-     {proses: mengisi matriks dengan bilangan integer random dengan jumlah baris x dan kolom y} */
+}
+
+/* procedure isiMatriksRandom(input/output M: Matriks, input x: integer, input y: integer)
+{I.S.: M terdefinisi}
+{F.S.: M terisi dengan bilangan random sejumlah x baris dan y kolom, nbaris=x, nkolom=y}
+{proses: mengisi matriks dengan bilangan integer random dengan jumlah baris x dan kolom y} */
 void isiMatriksRandom(Matriks *M, int x, int y)
 {
     // Kamus
     int i, j;
 
     // Algoritma
-    // Inisialisasi seed untuk random number generator
     srand(time(NULL));
-
-    // Reset matriks terlebih dahulu
-    initMatriks(M);
 
     for (i = 1; i <= x; i++)
     {
         for (j = 1; j <= y; j++)
         {
-            addX(M, rand(), i, j); // Menggunakan addX untuk enkapsulasi
+            (*M).cell[i][j] = rand();
         }
     }
-} /* procedure isiMatriksIdentitas(input/output M: Matriks, input n: integer)
+
+    (*M).nbaris = x;
+    (*M).nkolom = y;
+}
+
+/* procedure isiMatriksIdentitas(input/output M: Matriks, input n: integer)
      {I.S.: M terdefinisi}
      {F.S.: M terisi dengan matriks identitas berukuran n x n, nbaris=nkolom=n}
      {proses: mengisi matriks dengan matriks identitas berukuran n x n} */
@@ -232,8 +232,6 @@ void isiMatriksIdentitas(Matriks *M, int n)
     int i, j;
 
     // Algoritma
-    // Reset matriks terlebih dahulu
-    initMatriks(M);
 
     for (i = 1; i <= n; i++)
     {
@@ -241,14 +239,16 @@ void isiMatriksIdentitas(Matriks *M, int n)
         {
             if (i == j)
             {
-                addX(M, 1, i, j); // Menggunakan addX untuk enkapsulasi
+                (*M).cell[i][j] = 1;
             }
             else
             {
-                addX(M, 0, i, j); // Menggunakan addX untuk enkapsulasi
+                (*M).cell[i][j] = 0;
             }
         }
     }
+    (*M).nbaris = n;
+    (*M).nkolom = n;
 }
 
 /* OPERASI BACA/TULIS */
@@ -281,73 +281,113 @@ void printMatriks(Matriks M)
     int i, j;
 
     // Algoritma
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
-            printf("%d", M.cell[i][j]);
+            printf("   %d ", M.cell[i][j]);
         }
+        printf("\n");
     }
 }
 
 /* procedure viewMatriks (input M:Matriks)
     {I.S.: M terdefinisi}
     {F.S.: -}
-    {Proses: menampilkan elemen M.cell yang terisi ke layar}
-    {Contoh: jika ada elemen di [1][1]=10 dan [9][9]=20, maka:
-     - nbaris=2, nkolom=2 (2 baris dan 2 kolom terisi)
-     - viewMatriks akan menampilkan matriks 9x9 (dari baris 1-9, kolom 1-9)
-     - posisi kosong ditampilkan dengan titik "."} */
+    {Proses: menampilkan elemen M.cell yang terisi ke layar} */
 void viewMatriks(Matriks M)
 {
     // Kamus
     int i, j;
-    int minBaris = 11, maxBaris = 0;
-    int minKolom = 11, maxKolom = 0;
-    boolean adaElemen = false;
+    int minBaris = 1, maxBaris = 10;
+    int minKolom = 1, maxKolom = 10;
+    int pass = 0;
 
     // Algoritma
-    // Cari rentang baris dan kolom yang terisi
-    for (i = 1; i <= 11; i++)
+    if (!isEmptyMatriks(M))
     {
-        for (j = 1; j <= 11; j++)
+        while (minBaris <= 10 && pass == 0)
         {
-            if (M.cell[i][j] != -999)
+            j = 1;
+            while (j <= 10 && pass == 0)
             {
-                adaElemen = true;
-                if (i < minBaris)
-                    minBaris = i;
-                if (i > maxBaris)
-                    maxBaris = i;
-                if (j < minKolom)
-                    minKolom = j;
-                if (j > maxKolom)
-                    maxKolom = j;
+                if (M.cell[minBaris][j] != -999)
+                {
+                    pass = 1;
+                }
+
+                j++;
             }
+            minBaris++;
         }
-    }
+        minBaris--;
 
-    if (!adaElemen)
-    {
-        printf("Matrix is empty\n");
-        return;
-    }
-
-    // Tampilkan matriks dalam rentang yang terisi
-    for (i = minBaris; i <= maxBaris; i++)
-    {
-        for (j = minKolom; j <= maxKolom; j++)
+        pass = 0;
+        while (minKolom <= 10 && pass == 0)
         {
-            if (M.cell[i][j] != -999)
+            i = 1;
+            while (i <= 10 && pass == 0)
             {
-                printf("%4d ", M.cell[i][j]);
+                if (M.cell[i][minKolom] != -999)
+                {
+                    pass = 1;
+                }
+
+                i++;
             }
-            else
-            {
-                printf("   . "); // Tampilkan titik untuk posisi kosong dalam rentang
-            }
+            minKolom++;
         }
-        printf("\n");
+        minKolom--;
+
+        j = 10;
+        pass = 0;
+        while (maxBaris >= minBaris && pass == 0)
+        {
+            j = 10;
+            while (j >= minKolom && pass == 0)
+            {
+                if (M.cell[maxBaris][j] != -999)
+                {
+                    pass = 1;
+                }
+                j--;
+            }
+            maxBaris--;
+        }
+        maxBaris++;
+
+        i = 10;
+        pass = 0;
+        while (maxKolom >= minKolom && pass == 0)
+        {
+            i = 10;
+            while (i >= minBaris && pass == 0)
+            {
+                if (M.cell[i][maxKolom] != -999)
+                {
+                    pass = 1;
+                }
+                i--;
+            }
+            maxKolom--;
+        }
+        maxKolom++;
+
+        for (i = minBaris; i <= maxBaris; i++)
+        {
+            for (j = minKolom; j <= maxKolom; j++)
+            {
+                if (M.cell[i][j] != -999)
+                {
+                    printf("%4d ", M.cell[i][j]);
+                }
+                else
+                {
+                    printf("   . ");
+                }
+            }
+            printf("\n");
+        }
     }
 }
 
@@ -363,23 +403,21 @@ Matriks addMatriks(Matriks M1, Matriks M2)
     // Algoritma
     initMatriks(&M3);
 
-    // Process all valid elements in both matrices
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
-            // Only add if both elements are valid (not -999)
             if (M1.cell[i][j] != -999 && M2.cell[i][j] != -999)
             {
-                addX(&M3, M1.cell[i][j] + M2.cell[i][j], i, j);
+                M3.cell[i][j] = M1.cell[i][j] + M2.cell[i][j];
             }
-            else if (M1.cell[i][j] != -999) // Only M1 has valid element
+            else if (M1.cell[i][j] != -999)
             {
-                addX(&M3, M1.cell[i][j], i, j);
+                M3.cell[i][j] = M1.cell[i][j];
             }
-            else if (M2.cell[i][j] != -999) // Only M2 has valid element
+            else if (M2.cell[i][j] != -999)
             {
-                addX(&M3, M2.cell[i][j], i, j);
+                M3.cell[i][j] = M2.cell[i][j];
             }
         }
     }
@@ -398,23 +436,21 @@ Matriks subMatriks(Matriks M1, Matriks M2)
     // Algoritma
     initMatriks(&M3);
 
-    // Process all valid elements in both matrices
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
-            // Only subtract if both elements are valid (not -999)
             if (M1.cell[i][j] != -999 && M2.cell[i][j] != -999)
             {
-                addX(&M3, M1.cell[i][j] - M2.cell[i][j], i, j);
+                M3.cell[i][j] = M1.cell[i][j] - M2.cell[i][j];
             }
-            else if (M1.cell[i][j] != -999) // Only M1 has valid element
+            else if (M1.cell[i][j] != -999)
             {
-                addX(&M3, M1.cell[i][j], i, j);
+                M3.cell[i][j] = M1.cell[i][j];
             }
-            else if (M2.cell[i][j] != -999) // Only M2 has valid element
+            else if (M2.cell[i][j] != -999)
             {
-                addX(&M3, -M2.cell[i][j], i, j);
+                M3.cell[i][j] = -M2.cell[i][j];
             }
         }
     }
@@ -428,35 +464,32 @@ Matriks kaliMatriks(Matriks M1, Matriks M2)
 {
     // Kamus
     int i, j, k;
-    int temp;
+    int tempSum;
+    int ValidMultiplication = 0;
     Matriks M3;
 
     // Algoritma
     initMatriks(&M3);
 
-    // Matrix multiplication: M1(n x m) * M2(m x p) = M3(n x p)
-    // Only process valid elements based on actual matrix content
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
-            temp = 0; // Initialize accumulator
-            // Check if we can multiply this position
-            boolean hasValidMultiplication = false;
+            tempSum = 0;
+            ValidMultiplication = 0;
 
-            for (k = 1; k <= 11; k++)
+            for (k = 1; k <= 10; k++)
             {
                 if (M1.cell[i][k] != -999 && M2.cell[k][j] != -999)
                 {
-                    temp += M1.cell[i][k] * M2.cell[k][j];
-                    hasValidMultiplication = true;
+                    tempSum += M1.cell[i][k] * M2.cell[k][j];
+                    ValidMultiplication = 1;
                 }
             }
 
-            // Only add to result if we had valid multiplication
-            if (hasValidMultiplication)
+            if (ValidMultiplication)
             {
-                addX(&M3, temp, i, j);
+                M3.cell[i][j] = tempSum;
             }
         }
     }
@@ -466,28 +499,27 @@ Matriks kaliMatriks(Matriks M1, Matriks M2)
 
 /* function kaliSkalarMatriks(M: Matriks, x: integer) -> Matriks
 {mengembalikan perkalian antara matriks M dengan nilai skalar x} */
-Matriks kaliSkalarMatriks(Matriks M1, int x)
+Matriks kaliSkalarMatriks(Matriks M, int x)
 {
     // Kamus
     int i, j;
-    Matriks M3;
+    Matriks MOut;
 
     // Algoritma
-    initMatriks(&M3);
+    initMatriks(&MOut);
 
-    // Process all valid elements in the matrix
-    for (i = 1; i <= 11; i++)
+    for (i = 1; i <= 10; i++)
     {
-        for (j = 1; j <= 11; j++)
+        for (j = 1; j <= 10; j++)
         {
-            if (M1.cell[i][j] != -999)
+            if (M.cell[i][j] != -999)
             {
-                addX(&M3, M1.cell[i][j] * x, i, j);
+                MOut.cell[i][j] = M.cell[i][j] * x;
             }
         }
     }
 
-    return M3;
+    return MOut;
 }
 
 /* OPERASI LAINNYA */
@@ -502,9 +534,14 @@ void transposeMatriks(Matriks *M)
     int maxDim;
 
     // Algoritma
-    // For in-place transpose, we can only properly transpose square matrices
-    // Use the larger dimension to ensure we don't miss any elements
-    maxDim = ((*M).nbaris > (*M).nkolom) ? (*M).nbaris : (*M).nkolom;
+    if ((*M).nbaris > (*M).nkolom)
+    {
+        maxDim = (*M).nbaris;
+    }
+    else
+    {
+        maxDim = (*M).nbaris;
+    }
 
     for (i = 1; i <= maxDim; i++)
     {
@@ -519,7 +556,6 @@ void transposeMatriks(Matriks *M)
         }
     }
 
-    // Swap dimensions
     temp = (*M).nbaris;
     (*M).nbaris = (*M).nkolom;
     (*M).nkolom = temp;
@@ -536,16 +572,15 @@ Matriks getTransposeMatriks(Matriks M)
     // Algoritma
     initMatriks(&MT);
 
-    // Only process valid elements based on matrix dimensions
-    for (i = 1; i <= M.nbaris; i++)
+    for (i = 1; i <= getNBaris(M); i++)
     {
-        for (j = 1; j <= M.nkolom; j++)
+        for (j = 1; j <= getNKolom(M); j++)
         {
             MT.cell[j][i] = M.cell[i][j];
         }
     }
-    MT.nbaris = M.nkolom;
-    MT.nkolom = M.nbaris;
+    MT.nbaris = getNKolom(M);
+    MT.nkolom = getNBaris(M);
     return MT;
 }
 
@@ -559,7 +594,7 @@ Matriks addPadding(Matriks M, int n)
 
     // Algoritma
     initMatriks(&MPad);
-    if (!isFullMatriks(M) && M.nbaris + (2 * n) <= 11 && M.nkolom + (2 * n) <= 11)
+    if (!isFullMatriks(M) && M.nbaris + (2 * n) <= 10 && M.nkolom + (2 * n) <= 10)
     {
         for (i = 1; i <= M.nbaris; i++)
         {
@@ -765,10 +800,10 @@ void searchX(Matriks M, int X, int *row, int *col)
     *col = -999;
 
     i = 1;
-    while (i <= 11 && !found && !isEmptyMatriks(M))
+    while (i <= 10 && !found && !isEmptyMatriks(M))
     {
         j = 1;
-        while (j <= 11 && !found)
+        while (j <= 10 && !found)
         {
             if (M.cell[i][j] == X)
             {
@@ -793,7 +828,6 @@ int countX(Matriks M, int X)
     // Algoritma
     count = 0;
 
-    // Only count elements within valid matrix dimensions
     for (i = 1; i <= M.nbaris; i++)
     {
         for (j = 1; j <= M.nkolom; j++)
