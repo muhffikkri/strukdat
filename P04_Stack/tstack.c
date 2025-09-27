@@ -1,7 +1,7 @@
 /* Program   : tstack.c */
 /* Deskripsi : file BODY modul stack karakter */
-/* NIM/Nama  : */
-/* Tanggal   : */
+/* NIM/Nama  : 24060124130069/Muhammad Fikri*/
+/* Tanggal   : 25 September 2025*/
 /***********************************/
 
 #include <stdio.h>
@@ -15,8 +15,10 @@
     {Proses: menginisialisasi T} */
 void createStack(Tstack *T)
 {
+    // Kamus
     int i = 1;
 
+    // Algoritma
     for (i; i <= 10; i++)
     {
         (*T).wadah[i] = '#';
@@ -24,22 +26,13 @@ void createStack(Tstack *T)
     (*T).top = 0;
 }
 
-/*function top( T: Tstack) -> integer
-    {mengembalikan posisi puncak stack } */
-// int top (Tstack T);
-// dalam praktikum ini, fungsi dapat direalisasikan
-// menjadi macro dalam bahasa C.
-#define top(T) (T).top
-
-/*function infotop( T: Tstack) -> character
-    {mengembalikan nilai elemen top stack } */
-// char infotop (Tstack T);
-#define infotop(T) (T).wadah[(T).top]
-
 /*function isEmptyStack( T: Tstack) -> boolean
     {mengembalikan True jika T kosong } */
 boolean isEmptyStack(Tstack T)
 {
+    // Kamus
+
+    // Algoritma
     return top(T) == 0;
 }
 
@@ -47,6 +40,9 @@ boolean isEmptyStack(Tstack T)
     {mengembalikan True jika T penuh } */
 boolean isFullStack(Tstack T)
 {
+    // Kamus
+
+    // Algoritma
     return top(T) == 10;
 }
 
@@ -56,6 +52,9 @@ boolean isFullStack(Tstack T)
     {Proses: mengisi elemen top baru, bila belum penuh }*/
 void push(Tstack *T, char E)
 {
+    // Kamus
+
+    // Algoritma
     if (!isFullStack(*T))
     {
         (*T).wadah[top(*T) + 1] = E;
@@ -69,11 +68,19 @@ void push(Tstack *T, char E)
     {Proses: mengambil elemen top, bila belum kosong }*/
 void pop(Tstack *T, char *X)
 {
+    // Kamus
+
+    // Algoritma
     if (!isEmptyStack(*T))
     {
+        *X = infotop(*T);
         (*T).wadah[top(*T)] = '#';
+        (*T).top = top(*T) - 1;
     }
-    (*T).top = top(*T) - 1;
+    else
+    {
+        *X = '#';
+    }
 }
 
 /*procedure printStack ( input T:Tstack )
@@ -83,12 +90,19 @@ void pop(Tstack *T, char *X)
     {setiap elemen dipisah tanda titik koma } */
 void printStack(Tstack T)
 {
-    int i = 10;
+    // Kamus
+    int i;
 
-    for (i; i >= 1; i--)
+    // Algoritma
+    for (i = 1; i <= 10; i++)
     {
         printf("%c", T.wadah[i]);
+        if (i < 10)
+        {
+            printf("; ");
+        }
     }
+    printf("\n");
 }
 
 /*procedure viewStack ( input T:Tstack )
@@ -98,8 +112,10 @@ void printStack(Tstack T)
     {setiap elemen dipisah tanda titik koma } */
 void viewStack(Tstack T)
 {
+    // Kamus
     int i = top(T);
 
+    // Algoritma
     for (i; i >= 1; i--)
     {
         printf("%c", T.wadah[i]);
@@ -109,8 +125,20 @@ void viewStack(Tstack T)
 /* boolean isPalindrom(kata:String)
    {mengembalikan true jika kata merupakan palindrom, false jika tidak},
    {asumsi panjang kata maksimum adalah 30 karakter} */
-bool isPalindrom(char kata[30])
+boolean isPalindrom(Tstack T)
 {
+    // Kamus
+    int i;
+
+    // Algoritma
+    for (i = 1; i <= (T.top / 2); i++)
+    {
+        if (T.wadah[i] != T.wadah[T.top - i + 1])
+        {
+            return false;
+        }
+    }
+    return true;
 }
 
 /*procedure pushN ( input/output T:Tstack, input N: integer )
@@ -119,17 +147,60 @@ bool isPalindrom(char kata[30])
     {Proses: mengisi elemen top baru N kali dari keyboard, bila belum penuh }*/
 void pushN(Tstack *T, int N)
 {
+    // Kamus
     int i = 1;
     char e;
 
-    if (!isEmptyStack(*T))
+    // Algoritma
+    if (!isFullStack(*T))
     {
-        for (i; i <= N; i++)
+        for (i; i <= N && !isFullStack(*T); i++)
         {
-            scanf(" %c", e);
-            push((&T), e);
+            scanf(" %c", &e);
+            push(&(*T), e);
         }
     }
 }
 
-/* kerjakan latihan aplikasi stack di file mbrowser.c */
+/*procedure PushBabel(input/output T:TStack)
+    {I.S.: T terdefinisi, masukan terdefinisi }
+    {F.S.: T bertambah 1 elemen (E) bila belum penuh atau menjadi kosong bila stack penuh }
+    {Proses: menumpuk top atau menghapus semua elemen }*/
+void PushBabel(Tstack *T)
+{
+    // Kamus
+    char input;
+
+    // Algoritma
+    printf("Input karakter : ");
+    scanf(" %c", &input);
+    push(T, input);
+}
+
+/*Procedure Backward(Input/Output T1, T2:TStack, Input/Output X:char)
+     {I.S.: T1 terdefinisi, T2 terdefinisi }
+    {F.S.: T berkurang 1 elemen  bila T1 tidak kosong}
+    {Proses: menghapus 1 elemen di T1 dan menyimpan di T2}*/
+void Backward(Tstack *T1, Tstack *T2)
+{
+    // Kamus
+    char X;
+
+    // Algoritma
+    pop(T1, &X);
+    push(T2, X);
+}
+
+/*Procedure Forward(Input/Output T1, T2:TStack, Input/Output X:char)
+     {I.S.: T1 terdefinisi, T2 terdefinisi }
+    {F.S.: T2 berkurang 1 elemen  bila T2 tidak kosong}
+    {Proses: menghapus 1 elemen di T2 dan menyimpan di T1}*/
+void Forward(Tstack *T1, Tstack *T2)
+{
+    // Kamus
+    char X;
+
+    // Algoritma
+    pop(T2, &X);
+    push(T1, X);
+}

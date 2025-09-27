@@ -1,7 +1,7 @@
 /* Program   : boolean.h */
 /* Deskripsi : Header fungsi boolean */
 /* NIM/Nama  : 24060124130069 */
-/* Tanggal   : 18 September 2025 */
+/* Tanggal   : 25 September 2025 */
 /***********************************/
 
 // Kamus
