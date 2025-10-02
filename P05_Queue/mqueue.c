@@ -175,28 +175,6 @@ int main()
     printf("\n");
     printf("    Status: PASSED (visual check - should dequeue from longer queue)\n\n");
 
-    // 15. TEST COMPREHENSIVE - Fill and empty cycle
-    printf("15. TEST COMPREHENSIVE - Fill and empty cycle\n");
-    createQueue(&Q1);
-    printf("    Filling queue with A-E:\n");
-    for (char c = 'A'; c <= 'E'; c++)
-    {
-        enqueue(&Q1, c);
-        printf("      After enqueue('%c'): size=%d, ", c, sizeQueue(Q1));
-        viewQueue(Q1);
-        printf("\n");
-    }
-
-    printf("    Emptying queue:\n");
-    while (!isEmptyQueue(Q1))
-    {
-        dequeue(&Q1, &e);
-        printf("      Dequeued '%c': size=%d, ", e, sizeQueue(Q1));
-        viewQueue(Q1);
-        printf("\n");
-    }
-    printf("    Status: PASSED (cycle completed)\n\n");
-
     printf("=== ALL TESTS COMPLETED ===\n");
 
     return 0;

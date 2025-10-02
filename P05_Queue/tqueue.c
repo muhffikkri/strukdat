@@ -113,7 +113,6 @@ void viewQueue(tqueue Q)
 boolean isEmptyQueue(tqueue Q)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     return head(Q) == 0 && tail(Q) == 0;
@@ -124,7 +123,6 @@ boolean isEmptyQueue(tqueue Q)
 boolean isFullQueue(tqueue Q)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     return head(Q) == 1 && tail(Q) == 5;
@@ -135,7 +133,6 @@ boolean isFullQueue(tqueue Q)
 boolean isOneElement(tqueue Q)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     return head(Q) == 1 && tail(Q) == 1;
@@ -148,7 +145,6 @@ boolean isOneElement(tqueue Q)
 void enqueue(tqueue *Q, char e)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     if (!isFullQueue(*Q))
@@ -202,7 +198,6 @@ void dequeue(tqueue *Q, char *e)
 void enqueue2(tqueue *Q1, tqueue *Q2, char e)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     if ((sizeQueue(*Q1) <= sizeQueue(*Q2)) && !isFullQueue(*Q1))
@@ -223,7 +218,6 @@ void enqueue2(tqueue *Q1, tqueue *Q2, char e)
 void dequeue2(tqueue *Q1, tqueue *Q2, char *e)
 {
     // Kamus
-    // tidak ada variabel lokal
 
     // Algoritma
     if ((sizeQueue(*Q1) <= sizeQueue(*Q2)) && !isEmptyQueue(*Q2))
