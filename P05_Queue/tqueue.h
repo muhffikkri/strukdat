@@ -3,48 +3,50 @@
 #include "boolean.h"
 
 /* Program   : tqueue.h */
-/* Deskripsi : ADT Queue representasi kontigu dengan array, 
+/* Deskripsi : ADT Queue representasi kontigu dengan array,
                model I: head selalu di posisi 0 atau 1 */
-/* NIM/Nama  : */
-/* Tanggal   : */
+/* NIM/Nama  : 24060124130069/Muhammad Fikri*/
+/* Tanggal   : 2 Oktober 2025*/
 /***********************************/
 
 /* type tQueue = <  wadah: array [1..5] of character ,
-					head: integer ,
-					tail: integer >
+          head: integer ,
+          tail: integer >
 {cara akses: Q:tQueue, Q.head=head(Q) ...} */
-typedef struct { char wadah[6]; //kapasitas 5 elemen, indeks 0 tidak dipakai
-                  int head; 
-                  int tail; 
-                } tqueue;
+typedef struct
+{
+  char wadah[6]; // kapasitas 5 elemen, indeks 0 tidak dipakai
+  int head;
+  int tail;
+} tqueue;
 
 /*procedure createQueue ( output Q:tQueue)
 {I.S.: -}
 {F.S.: Q terdefinisi, kosong}
-{Proses: mengisi elemen dengan huruf '-', head=tail=0 }*/ 
+{Proses: mengisi elemen dengan huruf '-', head=tail=0 }*/
 void createQueue(tqueue *Q);
 
-/*function Head(Q:tQueue)-> integer 
+/*function Head(Q:tQueue)-> integer
 {mengembalikan elemen terdepan antrian Q} */
-//int Head(tqueue Q);
-#define head(Q) (Q).head //implementasi fisik macro
+// int Head(tqueue Q);
+#define head(Q) (Q).head // implementasi fisik macro
 
-/*function Tail(Q:tQueue)-> integer 
+/*function Tail(Q:tQueue)-> integer
 {mengembalikan elemen terakhir antrian Q} */
-//int Tail(tqueue Q);
-#define tail(Q) (Q).tail //implementasi fisik macro
+// int Tail(tqueue Q);
+#define tail(Q) (Q).tail // implementasi fisik macro
 
-/*function infoHead(Q:tQueue)-> character 
+/*function infoHead(Q:tQueue)-> character
 {mengembalikan nilai elemen terdepan antrian Q} */
 /*pikirkan bila antrian kosong*/
 int infoHead(tqueue Q);
 
-/*function infoTail(Q:tQueue)-> character 
+/*function infoTail(Q:tQueue)-> character
 {mengembalikan nilai elemen terakhir antrian Q} */
 /*pikirkan bila antrian kosong*/
 int infoTail(tqueue Q);
 
-/*function sizeQueue(Q:tQueue)-> integer 
+/*function sizeQueue(Q:tQueue)-> integer
 {mengembalikan panjang antrian Q} */
 int sizeQueue(tqueue Q);
 
@@ -63,7 +65,7 @@ void viewQueue(tqueue Q);
 /*function isEmptyQueue(Q:tQueue) -> boolean
 {mengembalikan true jika Q kosong}*/
 boolean isEmptyQueue(tqueue Q);
- 
+
 /*function isFullQueue(Q:tQueue) -> boolean
 {mengembalikan true jika Q penuh}*/
 boolean isFullQueue(tqueue Q);
@@ -77,7 +79,7 @@ boolean isOneElement(tqueue Q);
 {F.S.: elemen wadah Q bertambah 1, bila belum penuh}
 {proses: menambah elemen wadah Q } */
 void enqueue(tqueue *Q, char e);
-  
+
 /*procedure deQueue( input/output Q:tQueue, output e: character )
 {I.S.: }
 {F.S.: e=infohead(Q) atau e='-' bila Q kosong, elemen wadah Q berkurang 1 }

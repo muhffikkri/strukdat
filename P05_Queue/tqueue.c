@@ -1,13 +1,13 @@
+/* Program   : tqueue.c */
+/* Deskripsi : file BODY modul ADT Queue representasi kontigu dengan array,
+               model I: head selalu di posisi 0 atau 1 */
+/* NIM/Nama  : 24060124130069/Muhammad Fikri*/
+/* Tanggal   : 2 Oktober 2025*/
+/***********************************/
+
 #include <stdio.h>
 #include "tqueue.h"
 #include "boolean.h"
-
-/* Program   : tqueue.h */
-/* Deskripsi : ADT Queue representasi kontigu dengan array,
-               model I: head selalu di posisi 0 atau 1 */
-/* NIM/Nama  : */
-/* Tanggal   : */
-/***********************************/
 
 /*procedure createQueue ( output Q:tQueue)
 {I.S.: -}
@@ -15,8 +15,11 @@
 {Proses: mengisi elemen dengan huruf '-', head=tail=0 }*/
 void createQueue(tqueue *Q)
 {
-    int i = 1;
+    // Kamus
+    int i;
 
+    // Algoritma
+    i = 1;
     for (i; i <= 5; i++)
     {
         (*Q).wadah[i] = '-';
@@ -41,6 +44,9 @@ void createQueue(tqueue *Q)
 /*pikirkan bila antrian kosong*/
 int infoHead(tqueue Q)
 {
+    // Kamus
+
+    // Algoritma
     return Q.wadah[head(Q)];
 }
 
@@ -49,6 +55,9 @@ int infoHead(tqueue Q)
 /*pikirkan bila antrian kosong*/
 int infoTail(tqueue Q)
 {
+    // Kamus
+
+    // Algoritma
     return Q.wadah[tail(Q)];
 }
 
@@ -56,6 +65,9 @@ int infoTail(tqueue Q)
 {mengembalikan panjang antrian Q} */
 int sizeQueue(tqueue Q)
 {
+    // Kamus
+
+    // Algoritma
     return tail(Q);
 }
 
@@ -65,8 +77,11 @@ int sizeQueue(tqueue Q)
 {proses: mencetak semua elemen wadah ke layar}*/
 void printQueue(tqueue Q)
 {
-    int i = 1;
+    // Kamus
+    int i;
 
+    // Algoritma
+    i = 1;
     for (i; i <= 5; i++)
     {
         printf("%c", Q.wadah[i]);
@@ -79,8 +94,11 @@ void printQueue(tqueue Q)
 {proses: mencetak elemen tak kosong ke layar}*/
 void viewQueue(tqueue Q)
 {
-    int i = 1;
+    // Kamus
+    int i;
 
+    // Algoritma
+    i = 1;
     if (!isEmptyQueue(Q))
     {
         for (i; i <= tail(Q); i++)
@@ -94,6 +112,10 @@ void viewQueue(tqueue Q)
 {mengembalikan true jika Q kosong}*/
 boolean isEmptyQueue(tqueue Q)
 {
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
     return head(Q) == 0 && tail(Q) == 0;
 }
 
@@ -101,6 +123,10 @@ boolean isEmptyQueue(tqueue Q)
 {mengembalikan true jika Q penuh}*/
 boolean isFullQueue(tqueue Q)
 {
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
     return head(Q) == 1 && tail(Q) == 5;
 }
 
@@ -108,6 +134,10 @@ boolean isFullQueue(tqueue Q)
 {mengembalikan true jika hanya ada 1 elemen }*/
 boolean isOneElement(tqueue Q)
 {
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
     return head(Q) == 1 && tail(Q) == 1;
 }
 
@@ -117,6 +147,10 @@ boolean isOneElement(tqueue Q)
 {proses: menambah elemen wadah Q } */
 void enqueue(tqueue *Q, char e)
 {
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
     if (!isFullQueue(*Q))
     {
         (*Q).wadah[tail(*Q) + 1] = e;
@@ -136,8 +170,11 @@ void enqueue(tqueue *Q, char e)
 {bila awalnya 1 elemen, maka Head dan Tail menjadi 0 } */
 void dequeue(tqueue *Q, char *e)
 {
-    int i = 1;
+    // Kamus
+    int i;
 
+    // Algoritma
+    i = 1;
     if (!isEmptyQueue(*Q))
     {
         (*e) = infoHead(*Q);
@@ -147,12 +184,12 @@ void dequeue(tqueue *Q, char *e)
             (*Q).wadah[i] = (*Q).wadah[i + 1];
         }
         (*Q).wadah[tail(*Q)] = '-';
-        (*Q).tail = tail(*Q) - 1;
 
-        if (tail(*Q) == 0)
+        if (isOneElement(*Q))
         {
             (*Q).head = 0;
         }
+        (*Q).tail = tail(*Q) - 1;
     }
 }
 
@@ -164,21 +201,17 @@ void dequeue(tqueue *Q, char *e)
 {proses: menambah elemen wadah pada antrian terpendek dari Q1 atau Q2} */
 void enqueue2(tqueue *Q1, tqueue *Q2, char e)
 {
-    if ((sizeQueue(*Q1) < sizeQueue(*Q2)) && !isFullQueue(*Q1))
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
+    if ((sizeQueue(*Q1) <= sizeQueue(*Q2)) && !isFullQueue(*Q1))
     {
         enqueue(&(*Q1), e);
     }
     else if ((sizeQueue(*Q1) > sizeQueue(*Q2)) && !isFullQueue(*Q2))
     {
         enqueue(&(*Q2), e);
-    }
-    else
-    {
-        if (!isFullQueue(*Q1) && !isFullQueue(*Q2))
-        {
-            enqueue(&(*Q1), e);
-            enqueue(&(*Q2), e);
-        }
     }
 }
 
@@ -189,17 +222,16 @@ void enqueue2(tqueue *Q1, tqueue *Q2, char e)
 {bila awalnya 1 elemen, maka Head dan Tail antrian menjadi 0 } */
 void dequeue2(tqueue *Q1, tqueue *Q2, char *e)
 {
-    if ((sizeQueue(*Q1) < sizeQueue(*Q2)) && !isEmptyQueue(*Q2))
+    // Kamus
+    // tidak ada variabel lokal
+
+    // Algoritma
+    if ((sizeQueue(*Q1) <= sizeQueue(*Q2)) && !isEmptyQueue(*Q2))
     {
         dequeue(&(*Q2), &(*e));
     }
     else if ((sizeQueue(*Q1) > sizeQueue(*Q2)) && !isEmptyQueue(*Q1))
     {
         dequeue(&(*Q1), &(*e));
-    }
-    else
-    {
-        dequeue(&(*Q1), &(*e));
-        dequeue(&(*Q2), &(*e));
     }
 }
