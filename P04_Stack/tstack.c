@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include "tstack.h"
 #include "boolean.h"
-/* include tstack+boolean */
 
 /*procedure createStack( output T: Tstack)
     {I.S.: -}
