@@ -1,6 +1,7 @@
 #ifndef tqueue2_H
 #define tqueue2_H
-#include "boolean.h" //ambil dari praktikum sebelumnya
+#include "boolean.h"
+#include "tproses.h"
 
 /* Program   : tqueue2.h */
 /* Deskripsi : ADT Queue representasi kontigu dengan array,
@@ -9,13 +10,13 @@
 /* Tanggal   : 4 Oktober 2025*/
 /***********************************/
 
-/* type tQueue2 = < wadah: array [1..5] of character,
+/* type tQueue2 = < wadah: array [1..5] of tProses,
                 head: integer,
                 tail: integer >
 {cara akses: Q:tQueue2, Q.head = head(Q) ...} */
 typedef struct
 {
-    char wadah[6]; // kapasitas 5 elemen, indeks 0 tidak dipakai
+    tproses wadah[6]; // kapasitas 5 elemen, indeks 0 tidak dipakai
     int head;
     int tail;
 } tqueue2;
@@ -23,7 +24,7 @@ typedef struct
 /*procedure createQueue2 ( output Q:tQueue2 )
 {I.S.: -}
 {F.S.: Q terdefinisi, kosong}
-{Proses: mengisi head dan tail dengan 0, elemen kosong='#'}*/
+{Proses: mengisi head dan tail dengan 0, elemen kosong=tProses: <#, 0>}*/
 void createQueue2(tqueue2 *Q);
 
 /*Function Head2(Q:Tqueue2) -> integer
@@ -34,13 +35,13 @@ int head2(tqueue2 Q);
 {mengembalikan posisi elemen terakhir} */
 int tail2(tqueue2 Q);
 
-/*Function InfoHead2(Q:Tqueue2) -> character
+/*Function InfoHead2(Q:Tqueue2) -> tProses
 {mengembalikan nilai elemen terdepan} */
-char infoHead2(tqueue2 Q);
+tproses infoHead2(tqueue2 Q);
 
-/*Function InfoTail2(Q:Tqueue2) -> character
+/*Function InfoTail2(Q:Tqueue2) -> tProses
 {mengembalikan nilai elemen terakhir} */
-char infoTail2(tqueue2 Q);
+tproses infoTail2(tqueue2 Q);
 
 /*function isEmptyQueue2(Q:tQueue2) -> boolean
 {mengembalikan true jika Q kosong}*/
@@ -79,34 +80,20 @@ boolean isTailStop(tqueue2 Q);
 {I.S:Tail=kapasitas, head>1; F.S:head=1 }
 {Proses: mengembalikan Head ke indeks 1 }
 {Elemen selain head ikut bergeser menyesuaikan} */
-/*CATATAN: di praktikum ini, resetHead dilakukan ketika Enqueue */
 void resetHead(tqueue2 *Q);
 
-/*procedure enQueue2( input/output Q:tQueue2, input E: character )
-{I.S.: E terdefinisi}
+/*procedure enQueue2( input/output Q:tQueue2, input P: tProses )
+{I.S.: P terdefinisi}
 {F.S.: elemen wadah Q bertambah 1 bila belum penuh}
 {proses: menambah elemen wadah Q, jika tail(Q)=kapasitas,
 maka semua elemen digeser lebih dulu sehingga head(Q)=1 } */
-void enqueue2(tqueue2 *Q, char E);
+void enqueue2(tqueue2 *Q, tproses P);
 
-/*procedure deQueue2( input/output Q:tQueue2, output E: character )
+/*procedure deQueue2( input/output Q:tQueue2, output P: tProses )
 {I.S.: }
 {F.S.: elemen wadah Q berkurang 1 (Head), E=infohead(Q) lama, bila kosong, E='@'}
 {proses: mengurangi elemen wadah Q, bila 1 elemen,
 maka Head dan Tail mengacu ke 0 } */
-void dequeue2(tqueue2 *Q, char *E);
-
-/*procedure enQueue2N( input/output Q:tQueue2, input N:integer )
-{I.S.: Q terdefinisi, mungkin kosong, N <= kapasitas - panjang antrean}
-{F.S.: elemen wadah Q bertambah <= N elemen bila belum penuh}
-{proses: mengisi elemen dari keyboard, jika tail(Q) mencapai kapasitas,
-maka semua elemen digeser lebih dulu sehingga head(Q)=1 } */
-void enqueue2N(tqueue2 *Q, int N);
-
-/*EXTRA: kerjakan bila semua fungsi/prosedur di atas sudah well tested*/
-/*Function isEqualQueue2(Q1:TQueue2,Q2:TQueue2) -> boolean
-{mengembalikan true jika Q1 dan Q2 berisi elemen yang sama}
-{ingat, kondisi head Q1 dan Q2 mungkin tidak sama} */
-boolean isEqualQueue2(tqueue2 Q1, tqueue2 Q2);
+void dequeue2(tqueue2 *Q, tproses *P);
 
 #endif

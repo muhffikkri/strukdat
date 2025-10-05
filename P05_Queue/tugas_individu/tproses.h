@@ -8,47 +8,28 @@
 /* Tanggal   : 4 Oktober 2025*/
 /***********************************/
 
-/* type tProses = < idProses: array [1..5] or character,
-                burstTime: integer >
-{cara akses: P:tProses, p.burstTime = burstTime(P)}*/
+/* type tProses = < idProses: character,
+                    burstTime: integer >
+{cara akses: P:tProses, p.idProses = idProses(P),
+                        p.burstTime = burstTime(P)}*/
 typedef struct
 {
-    char idProses[6];
+    char idProses;
     int burstTime;
 } tproses;
 
-/*procedure createQueue2 ( output Q:tQueue2 )
+/*procedure createProses ( output P:tProses input c:character, n:integer)
 {I.S.: -}
-{F.S.: Q terdefinisi, kosong}
-{Proses: mengisi head dan tail dengan 0, elemen kosong='#'}*/
-void createQueue2(tproses *P);
+{F.S.: P terdefinisi, kosong}
+{Proses: mengisi burstTime dengan n, idProses=c}*/
+void createProses(tproses *P, char c, int n);
 
-/*Function Head2(Q:Tqueue2) -> integer
-{mengembalikan posisi elemen terdepan} */
-int head2(tproses P);
+/*Function idProses(P:TProses) -> character
+{mengembalikan nilai idProses} */
+char idProses(tproses P);
 
-/*Function Tail2(Q:Tqueue2) -> integer
-{mengembalikan posisi elemen terakhir} */
-int tail2(tproses P);
-
-/*Function InfoHead2(Q:Tqueue2) -> character
-{mengembalikan nilai elemen terdepan} */
-char infoHead2(tproses P);
-
-/*Function InfoTail2(Q:Tqueue2) -> character
-{mengembalikan nilai elemen terakhir} */
-char infoTail2(tproses P);
-
-/*function isEmptyQueue2(Q:tQueue2) -> boolean
-{mengembalikan true jika Q kosong}*/
-boolean isEmptyQueue2(tproses P);
-
-/*function isFullQueue2(Q:tQueue2) -> boolean
-{mengembalikan true jika Q penuh}*/
-boolean isFullQueue2(tproses P);
-
-/*function isOneElement2(Q:tQueue2) -> boolean
-{mengembalikan true jika Q berisi 1 elemen}*/
-boolean isOneElement2(tproses P);
+/*Function burstTime(P:TProses) -> integer
+{mengembalikan nilai burstTime} */
+int burstTime(tproses P);
 
 #endif

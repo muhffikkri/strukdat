@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "tqueue2.h"
 #include "boolean.h"
+#include "tproses.h"
 
 /* Program   : tqueue2.h */
 /* Deskripsi : ADT Queue representasi kontigu dengan array,
@@ -12,17 +13,19 @@
 /*procedure createQueue2 ( output Q:tQueue2 )
 {I.S.: -}
 {F.S.: Q terdefinisi, kosong}
-{Proses: mengisi head dan tail dengan 0, elemen kosong='#'}*/
+{Proses: mengisi head dan tail dengan 0, elemen kosong=tProses: <#, 0>}*/
 void createQueue2(tqueue2 *Q)
 {
     // Kamus
     int i;
+    tproses prosesKosong;
 
     // Algoritma
     i = 1;
+    createProses(&prosesKosong, '#', 0);
     for (i; i <= 5; i++)
     {
-        (*Q).wadah[i] = '#';
+        (*Q).wadah[i] = prosesKosong;
     }
 
     (*Q).head = 0;
@@ -43,16 +46,16 @@ int tail2(tqueue2 Q)
     return Q.tail;
 }
 
-/*Function InfoHead2(Q:Tqueue2) -> character
+/*Function InfoHead2(Q:Tqueue2) -> tProses
 {mengembalikan nilai elemen terdepan} */
-char infoHead2(tqueue2 Q)
+tproses infoHead2(tqueue2 Q)
 {
     return Q.wadah[head2(Q)];
 }
 
-/*Function InfoTail2(Q:Tqueue2) -> character
+/*Function InfoTail2(Q:Tqueue2) -> tProses
 {mengembalikan nilai elemen terakhir} */
-char infoTail2(tqueue2 Q)
+tproses infoTail2(tqueue2 Q)
 {
     return Q.wadah[tail2(Q)];
 }
@@ -110,11 +113,11 @@ void printQueue2(tqueue2 Q)
     int i;
 
     // Algoritma
-    i = 1;
-    for (i; i <= 5; i++)
+    for (i = 1; i <= 5; i++)
     {
-        printf("%c", Q.wadah[i]);
+        printf("[%c,%d] ", Q.wadah[i].idProses, Q.wadah[i].burstTime);
     }
+    printf("\n");
 }
 
 /*procedure viewQueue2(input Q:tQueue2)
@@ -127,13 +130,17 @@ void viewQueue2(tqueue2 Q)
     int i;
 
     // Algoritma
-    i = head2(Q);
     if (!isEmptyQueue2(Q))
     {
-        for (i; i <= tail2(Q); i++)
+        for (i = head2(Q); i <= tail2(Q); i++)
         {
-            printf("%c", Q.wadah[i]);
+            printf("[%c,%d] ", Q.wadah[i].idProses, Q.wadah[i].burstTime);
         }
+        printf("\n");
+    }
+    else
+    {
+        printf("Queue is empty\n");
     }
 }
 
@@ -152,69 +159,72 @@ boolean isTailStop(tqueue2 Q)
 {I.S:Tail=kapasitas, head>1; F.S:head=1 }
 {Proses: mengembalikan Head ke indeks 1 }
 {Elemen selain head ikut bergeser menyesuaikan} */
-/*CATATAN: di praktikum ini, resetHead dilakukan ketika Enqueue */
 void resetHead(tqueue2 *Q)
 {
     // Kamus
     int i, j;
+    tproses prosesKosong;
 
-    // ALgoritma
+    // Algoritma
+    j = head2(*Q);
+    i = 1;
+    createProses(&prosesKosong, '#', 0);
     if (isTailStop(*Q) && !isFullQueue2(*Q) && i != j)
     {
-        i = 1;
-        j = head2(*Q);
         for (i; i <= sizeQueue2(*Q); i++)
         {
             (*Q).wadah[i] = (*Q).wadah[j];
-            (*Q).wadah[j] = '#';
+            (*Q).wadah[j] = prosesKosong;
             j++;
         }
         (*Q).head = 1;
-        (*Q).tail = i - 1;
+        (*Q).tail = sizeQueue2(*Q);
     }
 }
 
-/*procedure enQueue2( input/output Q:tQueue2, input E: character )
-{I.S.: E terdefinisi}
+/*procedure enQueue2( input/output Q:tQueue2, input P: tProses )
+{I.S.: P terdefinisi}
 {F.S.: elemen wadah Q bertambah 1 bila belum penuh}
 {proses: menambah elemen wadah Q, jika tail(Q)=kapasitas,
 maka semua elemen digeser lebih dulu sehingga head(Q)=1 } */
-void enqueue2(tqueue2 *Q, char E)
+void enqueue2(tqueue2 *Q, tproses P)
 {
     // Kamus
 
     // Algoritma
     if (!isFullQueue2(*Q))
     {
-        if (isTailStop(*Q))
-        {
-            resetHead(&(*Q));
-        }
-
         if (isEmptyQueue2(*Q))
         {
             (*Q).head = 1;
+            (*Q).tail = 1;
+            (*Q).wadah[1] = P;
         }
-
-        (*Q).wadah[tail2(*Q) + 1] = E;
-        (*Q).tail = tail2(*Q) + 1;
+        else if (tail2(*Q) < 5) // masih ada ruang
+        {
+            (*Q).tail = tail2(*Q) + 1;
+            (*Q).wadah[tail2(*Q)] = P;
+        }
+        // Jika tail sudah di posisi 5, queue sudah penuh (tidak bisa enqueue)
     }
 }
 
-/*procedure deQueue2( input/output Q:tQueue2, output E: character )
+/*procedure deQueue2( input/output Q:tQueue2, output P: tProses )
 {I.S.: }
 {F.S.: elemen wadah Q berkurang 1 (Head), E=infohead(Q) lama, bila kosong, E='@'}
 {proses: mengurangi elemen wadah Q, bila 1 elemen,
 maka Head dan Tail mengacu ke 0 } */
-void dequeue2(tqueue2 *Q, char *E)
+void dequeue2(tqueue2 *Q, tproses *P)
 {
     // Kamus
+    tproses prosesKosong;
 
     // Algoritma
+    createProses(&prosesKosong, '#', 0);
     if (!isEmptyQueue2(*Q))
     {
-        (*E) = infoHead2(*Q);
-        (*Q).wadah[head2(*Q)] = '#';
+        (*P) = infoHead2(*Q);
+        (*Q).wadah[head2(*Q)] = prosesKosong;
 
         if (isOneElement2(*Q))
         {
@@ -225,54 +235,5 @@ void dequeue2(tqueue2 *Q, char *E)
         {
             (*Q).head = head2(*Q) + 1;
         }
-    }
-}
-
-/*procedure enQueue2N( input/output Q:tQueue2, input N:integer )
-{I.S.: Q terdefinisi, mungkin kosong, N <= kapasitas - panjang antrean}
-{F.S.: elemen wadah Q bertambah <= N elemen bila belum penuh}
-{proses: mengisi elemen dari keyboard, jika tail(Q) mencapai kapasitas,
-maka semua elemen digeser lebih dulu sehingga head(Q)=1 } */
-void enqueue2N(tqueue2 *Q, int N)
-{
-    // Kamus
-    char e;
-
-    // Algoritma
-    while (N > 0 && !isFullQueue2(*Q))
-    {
-        scanf(" %c", &e);
-        enqueue2(&(*Q), e);
-        N--;
-    }
-}
-
-/*EXTRA: kerjakan bila semua fungsi/prosedur di atas sudah well tested*/
-/*Function isEqualQueue2(Q1:TQueue2,Q2:TQueue2) -> boolean
-{mengembalikan true jika Q1 dan Q2 berisi elemen yang sama}
-{ingat, kondisi head Q1 dan Q2 mungkin tidak sama} */
-boolean isEqualQueue2(tqueue2 Q1, tqueue2 Q2)
-{
-    // Kamus
-    int i, j, count;
-
-    // Algoritma
-    i = head2(Q1);
-    j = head2(Q2);
-    count = 0;
-    if (sizeQueue2(Q1) == sizeQueue2(Q2))
-    {
-        while (Q1.wadah[i] == Q2.wadah[j])
-        {
-            i++;
-            j++;
-            count++;
-        }
-
-        return count == sizeQueue2(Q1);
-    }
-    else
-    {
-        return false;
     }
 }
