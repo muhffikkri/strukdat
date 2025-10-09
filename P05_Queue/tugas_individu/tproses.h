@@ -5,7 +5,7 @@
 /* Program   : tproses.h */
 /* Deskripsi : ADT Proses representasi kontigu dengan array */
 /* NIM/Nama  : 24060124130069/Muhammad Fikri*/
-/* Tanggal   : 4 Oktober 2025*/
+/* Tanggal   : 5 Oktober 2025*/
 /***********************************/
 
 /* type tProses = < idProses: character,

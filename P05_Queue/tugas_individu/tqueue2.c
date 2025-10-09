@@ -7,7 +7,7 @@
 /* Deskripsi : ADT Queue representasi kontigu dengan array,
                model II: head bergeser/jelajah */
 /* NIM/Nama  : 24060124130069/Muhammad Fikri*/
-/* Tanggal   : 2 Oktober 2025*/
+/* Tanggal   : 5 Oktober 2025*/
 /***********************************/
 
 /*procedure createQueue2 ( output Q:tQueue2 )
@@ -198,14 +198,16 @@ void enqueue2(tqueue2 *Q, tproses P)
         {
             (*Q).head = 1;
             (*Q).tail = 1;
-            (*Q).wadah[1] = P;
+            (*Q).wadah[head2(*Q)] = P;
         }
-        else if (tail2(*Q) < 5) // masih ada ruang
+        else
         {
-            (*Q).tail = tail2(*Q) + 1;
-            (*Q).wadah[tail2(*Q)] = P;
+            if (tail2(*Q) < 5)
+            {
+                (*Q).tail = tail2(*Q) + 1;
+                (*Q).wadah[tail2(*Q)] = P;
+            }
         }
-        // Jika tail sudah di posisi 5, queue sudah penuh (tidak bisa enqueue)
     }
 }
 
