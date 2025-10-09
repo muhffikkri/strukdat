@@ -1,28 +1,30 @@
 #ifndef tqueue3_H
-#define tqueue3_H 
+#define tqueue3_H
 #include "boolean.h"
 #include <math.h>
 
 /* Program   : tqueue3.h */
-/* Deskripsi : ADT Queue representasi kontigu dengan array, 
+/* Deskripsi : ADT Queue representasi kontigu dengan array,
                model III: head memutar searah jarum jam */
-/* NIM/Nama  : */
-/* Tanggal   : */
+/* NIM/Nama  : 24060124130069/Muhammad Fikri*/
+/* Tanggal   : 9 Oktober 2005*/
 /***********************************/
 
 /* type tQueue3 = < wadah: array [1..5] of character ,
-				head: integer ,
-				tail: integer >
+                head: integer ,
+                tail: integer >
 {cara akses: Q:tQueue3, Q.head=head(Q) ...} */
-typedef struct { char wadah[6]; //kapasitas 5 elemen 
-                  int head; 
-                  int tail 
-				} tqueue3;
+typedef struct
+{
+    char wadah[6]; // kapasitas 5 elemen
+    int head;
+    int tail;
+} tqueue3;
 
 /*function isEmptyQueue3(Q:tQueue3) -> boolean
 {mengembalikan true jika Q kosong}*/
 boolean isEmptyQueue3(tqueue3 Q);
- 
+
 /*function isFullQueue3(Q:tQueue3) -> boolean
 {mengembalikan true jika Q penuh}*/
 boolean isFullQueue3(tqueue3 Q);
@@ -34,7 +36,7 @@ boolean isOneElement3(tqueue3 Q);
 /*procedure createQueue3 ( output Q:tQueue3)
 {I.S.: -}
 {F.S.: Q terdefinisi, kosong}
-{Proses: mengisi komponen dengan 0, elemen kosong='#'}*/ 
+{Proses: mengisi komponen dengan 0, elemen kosong='#'}*/
 void createQueue3(tqueue3 *Q);
 
 /*Function Head3(Q:tqueue3) -> integer
@@ -53,7 +55,7 @@ char infoHead3(tqueue3 Q);
 {mengembalikan nilai elemen terakhir} */
 char infoTail3(tqueue3 Q);
 
-/*function sizeQueue3(Q:tQueue3)-> integer 
+/*function sizeQueue3(Q:tQueue3)-> integer
 {mengembalikan panjang antrian Q} */
 int sizeQueue3(tqueue3 Q);
 
@@ -74,7 +76,7 @@ void viewQueue3(tqueue3 Q);
 {F.S.: elemen wadah Q bertambah 1 bila belum penuh}
 {proses: menambah elemen wadah Q sebagai tail, mungkin memutar ke 1 } */
 void enqueue3(tqueue3 *Q, char E);
-  
+
 /*procedure deQueue3( input/output Q:tQueue3,output E: character )
 {I.S.: }
 {F.S.: elemen wadah Q berkurang 1 (Head), E=infohead(Q), bila kosong E=' '}
@@ -85,5 +87,16 @@ void dequeue3(tqueue3 *Q, char *E);
 /*function isTailOverHead(Q:tQueue3) -> boolean
 {mengembalikan true jika tail berada di depan head}*/
 boolean isTailOverHead(tqueue3 Q);
+
+/*procedure enqueue3N( input/output Q:tQueue3, input N:integer )
+{I.S.: Q terdefinisi, mungkin kosong, N <= kapasitas - panjang antrean}
+{F.S.: elemen wadah Q bertambah <= N elemen bila belum penuh}
+{proses: mengisi elemen dari keyboard} */
+void enqueue3N(tqueue3 *Q, int N);
+
+/*Function isEqualQueue3(Q1:tQueue3,Q2:tQueue3) -> boolean
+{mengembalikan true jika Q1 dan Q2 berisi elemen yang sama}
+{ingat, kondisi head Q1 dan Q2 mungkin tidak sama} */
+boolean isEqualQueue3(tqueue3 Q1, tqueue3 Q2);
 
 #endif
