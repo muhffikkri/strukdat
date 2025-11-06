@@ -403,40 +403,96 @@ infotype Modus(List1 L)
 	// kamus lokal
 	address P;
 	int mod;
+	infotype res;
 
 	// algoritma
 	P = First(L);
+	mod = countX(info(P));
+	res = info(P);
 
-	while (P != NIL)
+	do
 	{
 		P = next(P);
-	}
+		if (mod < CountX(L, info(P)))
+		{
+			mod = CountX(L, info(P));
+			res = info(P);
+		}
+	} while (P != NIL);
 
-	if (info(P) == V)
-	{
-		temp = next(P);
-		next(P) = Alokasi(VA);
-		P = next(P);
-		next(P) = temp;
-	}
+	return res;
 }
 
 /*function NbModus(L:List1) -> integer */
 /*{ mengembalikan banyaknya huruf yang paling banyak muncul di list L}*/
-int NbModus(List1 L);
+int NbModus(List1 L)
+{
+	// kamus lokal
+	address P;
+	int mod;
+	infotype res;
+
+	// algoritma
+	P = First(L);
+	mod = countX(info(P));
+
+	do
+	{
+		P = next(P);
+		if (mod < CountX(L, info(P)))
+		{
+			mod = CountX(L, info(P));
+		}
+	} while (P != NIL);
+
+	return mod;
+}
 
 /*OPERASI BANYAK LIST*/
 /*Procedure ConcatList(input L1:List1, input L2:List1, output L:List1)
 {I.S.: L1,L2 terdefinisi ;
  F.S.: L gabungan L1 dan L2}*/
-void ConcatList(List1 L1, List1 L2, List1 *L);
+void ConcatList(List1 L1, List1 L2, List1 *L)
+{
+	// kamus lokal
+	address P;
+
+	// algoritma
+	P = First(L1);
+
+	while (P != NIL)
+	{
+		InsertVLast(&(*L), info(P));
+	}
+
+	P = First(L2);
+
+	while (P != NIL)
+	{
+		InsertVLast(&(*L), info(P));
+	}
+}
 
 /*Procedure SplitList(input L:List1, output L1:List1, output L2:List1)
 {I.S.: L terdefinisi ;
  F.S.: L1, L2 hasil pemecahan L}*/
-void SplitList(List1 L, List1 *L1, List1 *L2);
+void SplitList(List1 L, List1 *L1, List1 *L2)
+{
+}
 
 /*Procedure CopyList(input L1:List1, output L2:List1)
 {I.S.: L1 terdefinisi;
  F.S.: L2 menjadi salinan L1}*/
-void CopyList(List1 L1, List1 *L2);
+void CopyList(List1 L1, List1 *L2)
+{
+	// kamus lokal
+	address P;
+
+	// algoritma
+	P = First(L1);
+
+	while (P != NIL)
+	{
+		InsertVLast(&(*L2), info(P));
+	}
+}
