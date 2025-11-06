@@ -1,7 +1,7 @@
 /* File : list1.h */
 /* Deskripsi : definisi dan spesifikasi ADT list berkait dengan representasi fisik pointer */
-/* NIM & Nama : */
-/* Tanggal : November 2025 */
+/* NIM & Nama 24060124130069 / Muhammad Fikri: */
+/* Tanggal : 6 November 2025 */
 #ifndef list1_H
 #define list1_H
 #include "boolean.h"
