@@ -96,7 +96,7 @@ void DeleteVLast(List1 *L, infotype *V);
 { I.S. L, X terdefinisi }
 { F.S. A berisi alamat elemen yang nilainya X.
 Proses: Mencari apakah ada elemen list dengan info(P)= X. Jika ada, mengisi A dengan address elemen tersebut. Jika tidak ada, A=Nil }*/
-void SearchX(List1 L, infotype X, address A);
+void SearchX(List1 L, infotype X, address *A);
 
 /*** MANIPULASI ELEMEN LIST ***/
 /*Procedure UpdateX(input/output L:List1, input X:infotype, input Y:infotype)
@@ -111,9 +111,9 @@ void UpdateX(List1 *L, infotype X, infotype Y);
 void Invers(List1 *L);
 
 /*********** SOAL TAMBAHAN, DIKERJAKAN BILA LUANG *****************/
-/*function CountVocal(L:List1, X:infotype) -> integer */
+/*function CountVocal(L:List1) -> integer */
 /*{ mengembalikan banyaknya kemunculan huruf vokal dalam list L}*/
-int CountVocal(List1 L, infotype X);
+int CountVocal(List1 L);
 
 /*function CountX(L:List1, X:infotype) -> integer */
 /*{ mengembalikan banyaknya kemunculan X dalam list L}*/
@@ -165,4 +165,4 @@ void SplitList(List1 L, List1 *L1, List1 *L2);
  F.S.: L2 menjadi salinan L1}*/
 void CopyList(List1 L1, List1 *L2);
 
-#endif;
+#endif

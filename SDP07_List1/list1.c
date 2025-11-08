@@ -127,16 +127,26 @@ void InsertVLast(List1 *L, infotype V)
 {
 	// kamus lokal
 	address P;
+	address Baru;
 
 	// algoritma
-	P = First(*L);
-
-	while (P != NIL)
+	Baru = Alokasi(V);
+	if (Baru != NIL)
 	{
-		P = next(P);
+		if (IsEmptyList(*L))
+		{
+			First(*L) = Baru;
+		}
+		else
+		{
+			P = First(*L);
+			while (next(P) != NIL)
+			{
+				P = next(P);
+			}
+			next(P) = Baru;
+		}
 	}
-
-	next(P) = Alokasi(V);
 }
 
 /******* PENGHAPUSAN ELEMEN ********/
@@ -151,11 +161,17 @@ void DeleteVFirst(List1 *L, infotype *V)
 	address P;
 
 	// algoritma
-	P = First(*L);
-	(*V) = info(P);
-
-	Dealokasi(P);
-	(*L).First = next(P);
+	if (IsEmptyList(*L))
+	{
+		(*V) = '#';
+	}
+	else
+	{
+		P = First(*L);
+		(*V) = info(P);
+		First(*L) = next(P);
+		Dealokasi(P);
+	}
 }
 
 /*Procedure DeleteVLast(input/output L:List1, output V:infotype )
@@ -167,17 +183,34 @@ void DeleteVLast(List1 *L, infotype *V)
 {
 	// kamus lokal
 	address P;
+	address Prec;
 
 	// algoritma
-	P = First(*L);
-
-	while (next(P) != NIL)
+	if (IsEmptyList(*L))
 	{
-		P = next(P);
+		(*V) = '#';
 	}
-
-	(*V) = info(P);
-	Dealokasi(P);
+	else if (next(First(*L)) == NIL)
+	{
+		// hanya 1 elemen
+		(*V) = info(First(*L));
+		Dealokasi(First(*L));
+		First(*L) = NIL;
+	}
+	else
+	{
+		// lebih dari 1 elemen
+		P = First(*L);
+		Prec = NIL;
+		while (next(P) != NIL)
+		{
+			Prec = P;
+			P = next(P);
+		}
+		(*V) = info(P);
+		next(Prec) = NIL;
+		Dealokasi(P);
+	}
 }
 
 /*** PENCARIAN ***/
@@ -185,22 +218,26 @@ void DeleteVLast(List1 *L, infotype *V)
 { I.S. L, X terdefinisi }
 { F.S. A berisi alamat elemen yang nilainya X.
 Proses: Mencari apakah ada elemen list dengan info(P)= X. Jika ada, mengisi A dengan address elemen tersebut. Jika tidak ada, A=Nil }*/
-void SearchX(List1 L, infotype X, address A)
+void SearchX(List1 L, infotype X, address *A)
 {
 	// kamus lokal
 	address P;
 
 	// algoritma
 	P = First(L);
+	(*A) = NIL;
 
-	while (P != NIL && info(P) != X)
+	while (P != NIL)
 	{
-		P = next(P);
-	}
-
-	if (info(P) == X)
-	{
-		A = Alokasi(info(P));
+		if (info(P) == X)
+		{
+			(*A) = P;
+			P = NIL;
+		}
+		else
+		{
+			P = next(P);
+		}
 	}
 }
 
@@ -235,15 +272,24 @@ void Invers(List1 *L)
 {
 	// kamus lokal
 	address P;
+	address Prec;
+	address Temp;
 
 	// algoritma
-	P = First(*L);
-
-	while (P != NIL)
+	if (!IsEmptyList(*L) && next(First(*L)) != NIL)
 	{
-		First(*L) = next(P);
-		next(P) =
-			P = next(P);
+		P = First(*L);
+		Prec = NIL;
+
+		while (P != NIL)
+		{
+			Temp = next(P);
+			next(P) = Prec;
+			Prec = P;
+			P = Temp;
+		}
+
+		First(*L) = Prec;
 	}
 }
 
@@ -319,7 +365,10 @@ float FrekuensiX(List1 L, infotype X)
 		P = next(P);
 	}
 
-	return freq / total;
+	if (total == 0)
+		return 0.0;
+	else
+		return (float)freq / (float)total;
 }
 
 /*Procedure SearchAllX(input L:List1, input X:infotype)
@@ -336,11 +385,12 @@ void SearchAllX(List1 L, infotype X)
 	P = First(L);
 	i = 1;
 
+	printf("Posisi elemen '%c': ", X);
 	while (P != NIL)
 	{
 		if (info(P) == X)
 		{
-			printf("Posisi ditemukan pada %d", &i);
+			printf("%d ", i);
 		}
 		P = next(P);
 		i++;
@@ -381,18 +431,24 @@ void InsertVAfter(List1 *L, infotype V, infotype VA)
 
 	// algoritma
 	P = First(*L);
-
-	while (P != NIL && info(P) != V)
+	if (IsEmptyList(*L))
 	{
-		P = next(P);
+		First(*L) = Alokasi(VA);
 	}
-
-	if (info(P) == V)
+	else
 	{
-		temp = next(P);
-		next(P) = Alokasi(VA);
-		P = next(P);
-		next(P) = temp;
+		while (P != NIL && info(P) != V)
+		{
+			P = next(P);
+		}
+
+		if (info(P) == V)
+		{
+			temp = next(P);
+			next(P) = Alokasi(VA);
+			P = next(P);
+			next(P) = temp;
+		}
 	}
 }
 
@@ -406,19 +462,25 @@ infotype Modus(List1 L)
 	infotype res;
 
 	// algoritma
+	if (IsEmptyList(L))
+	{
+		return '#';
+	}
+
 	P = First(L);
-	mod = countX(info(P));
+	mod = CountX(L, info(P));
 	res = info(P);
 
-	do
+	P = next(P);
+	while (P != NIL)
 	{
-		P = next(P);
 		if (mod < CountX(L, info(P)))
 		{
 			mod = CountX(L, info(P));
 			res = info(P);
 		}
-	} while (P != NIL);
+		P = next(P);
+	}
 
 	return res;
 }
@@ -430,20 +492,25 @@ int NbModus(List1 L)
 	// kamus lokal
 	address P;
 	int mod;
-	infotype res;
 
 	// algoritma
-	P = First(L);
-	mod = countX(info(P));
-
-	do
+	if (IsEmptyList(L))
 	{
-		P = next(P);
+		return 0;
+	}
+
+	P = First(L);
+	mod = CountX(L, info(P));
+
+	P = next(P);
+	while (P != NIL)
+	{
 		if (mod < CountX(L, info(P)))
 		{
 			mod = CountX(L, info(P));
 		}
-	} while (P != NIL);
+		P = next(P);
+	}
 
 	return mod;
 }
@@ -458,11 +525,13 @@ void ConcatList(List1 L1, List1 L2, List1 *L)
 	address P;
 
 	// algoritma
+	CreateList(&(*L));
 	P = First(L1);
 
 	while (P != NIL)
 	{
 		InsertVLast(&(*L), info(P));
+		P = next(P);
 	}
 
 	P = First(L2);
@@ -470,6 +539,7 @@ void ConcatList(List1 L1, List1 L2, List1 *L)
 	while (P != NIL)
 	{
 		InsertVLast(&(*L), info(P));
+		P = next(P);
 	}
 }
 
@@ -478,6 +548,37 @@ void ConcatList(List1 L1, List1 L2, List1 *L)
  F.S.: L1, L2 hasil pemecahan L}*/
 void SplitList(List1 L, List1 *L1, List1 *L2)
 {
+	// kamus lokal
+	address P;
+	int n;
+	int mid;
+	int i;
+
+	// algoritma
+	CreateList(&(*L1));
+	CreateList(&(*L2));
+
+	if (!IsEmptyList(L))
+	{
+		n = NbElm(L);
+		mid = (n + 1) / 2;
+
+		P = First(L);
+		i = 1;
+
+		while (P != NIL && i <= mid)
+		{
+			InsertVLast(&(*L1), info(P));
+			P = next(P);
+			i++;
+		}
+
+		while (P != NIL)
+		{
+			InsertVLast(&(*L2), info(P));
+			P = next(P);
+		}
+	}
 }
 
 /*Procedure CopyList(input L1:List1, output L2:List1)
@@ -489,10 +590,12 @@ void CopyList(List1 L1, List1 *L2)
 	address P;
 
 	// algoritma
+	CreateList(&(*L2));
 	P = First(L1);
 
 	while (P != NIL)
 	{
 		InsertVLast(&(*L2), info(P));
+		P = next(P);
 	}
 }
