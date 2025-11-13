@@ -1,6 +1,6 @@
 /* Program   : boolean.h */
 /* Deskripsi : Header fungsi boolean */
-/* NIM/Nama  : 24060124130069 */
+/* NIM/Nama  : 24060124130069 / Muhammad Fikri */
 /* Tanggal   : 13 November 2025 */
 /***********************************/
 
