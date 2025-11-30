@@ -1,52 +1,61 @@
 /* File : list3.h */
 /* Deskripsi : ADT list berkait dengan representasi fisik pointer */
-/* NIM & Nama : */
-/* Tanggal : */
+/* NIM & Nama : 24060124130069 / Muhammad Fikri */
+/* Tanggal : 23 November 2025 */
 #ifndef list3_H
 #define list3_H
 
 #define NIL NULL
-#define First(L) (L).First 
-#define info(P)  (P)->info
-#define prev(P)  (P)->prev 
-#define next(P)  (P)->next 
-typedef enum { false, true } boolean;
+#define First(L) (L).First
+#define info(P) (P)->info
+#define prev(P) (P)->prev
+#define next(P) (P)->next
+typedef enum
+{
+   false,
+   true
+} boolean;
 /* type infotype = character */
 typedef char infotype; /* elemen bertipe character */
 /* type address = pointer to Elm */
-typedef struct tElm * address; 
+typedef struct tElm *address;
 /* Representasi address dengan pointer */
 /* type Elm =< info:infotype, next:address > */
-typedef struct tElm { address  prev;
-                      infotype info;
-                      address  next;
-                    } Elm;
+typedef struct tElm
+{
+   address prev;
+   infotype info;
+   address next;
+} Elm;
 /* typedef List3 =< First:address >*/
-typedef struct { address First; } List3;
+typedef struct
+{
+   address First;
+} List3;
 
 /*OPERATOR ALOKASI*/
 /****************** Manajemen Memori ******************/
 /* Function Alokasi(E:infotype)->address
 {mengembalikan alamat elemen E bila berhasil, Nil bila gagal} */
-address Alokasi(infotype E); //representasi fisik fungsi
- 
-/* procedure Dealokasi (input/output P:address) */ 
-/* {I.S. P terdefinisi 
-    F.S. P dikembalikan ke sistem  
-	Proses: Melakukan pengembalian address P} */
-void Dealokasi (address *P);
+address Alokasi(infotype E); // representasi fisik fungsi
+
+/* procedure Dealokasi (input/output P:address) */
+/* {I.S. P terdefinisi
+    F.S. P dikembalikan ke sistem
+   Proses: Melakukan pengembalian address P} */
+void Dealokasi(address *P);
 
 /* PROTOTYPE */
 /********** PEMBUATAN LIST KOSONG ***********/
 /* Procedure CreateList(output L:List3)
-   {I.S.: - ; F.S.: L list kosong} 
+   {I.S.: - ; F.S.: L list kosong}
    {proses: membuat list kosong}*/
-void CreateList (List3 *L);
+void CreateList(List3 *L);
 
 /****************** TEST LIST KOSONG ******************/
-/* function IsEmptyList(L:List3) --> boolean 
+/* function IsEmptyList(L:List3) --> boolean
    {mengembalikan true bila list L kosong} */
-boolean IsEmptyList (List3 L);
+boolean IsEmptyList(List3 L);
 
 /*PENELUSURAN*/
 /*procedure PrintList(input L:List3)
@@ -63,13 +72,13 @@ int NbElm(List3 L);
 { I.S. List L mungkin kosong, V terdefinisi }
 { F.S. L tetap, atau bertambah elemen pertama berinfo V }
 { Insert sebuah elemen beralamat P dengan Info(P)=V sebagai elemen pertama list linier L yg mungkin kosong } */
-void InsertVFirst(List3 *L, infotype V );
+void InsertVFirst(List3 *L, infotype V);
 
 /*Procedure InsertVLast(input/output L:List3, input V:infotype )
 { I.S. List L mungkin kosong, V terdefinisi }
 { F.S. L tetap, atau bertambah elemen terakhir berinfo V}
 { Insert sebuah elemen beralamat P dengan Info(P)=V sebagai elemen akhir list linier L yg mungkin kosong }*/
-void InsertVLast(List3 *L, infotype V );
+void InsertVLast(List3 *L, infotype V);
 
 /******* PENGHAPUSAN ELEMEN ********/
 /*Procedure DeleteVFirst(input/output L:List3, output V:infotype )
@@ -174,17 +183,17 @@ void DeleteAllX(List3 *L, infotype X);
 
 /*OPERASI BANYAK LIST*/
 /*Procedure ConcatList(input L1:List3, input L2:List3, output L:List3)
-{I.S.: L1,L2 terdefinisi ; 
+{I.S.: L1,L2 terdefinisi ;
  F.S.: L gabungan L1 dan L2}*/
-void ConcatList(List3 L1, List3 L2, List3 *L); 
+void ConcatList(List3 L1, List3 L2, List3 *L);
 
 /*Procedure SplitList(input L:List3, output L1:List3, output L2:List3)
-{I.S.: L terdefinisi ; 
+{I.S.: L terdefinisi ;
  F.S.: L1, L2 hasil pemecahan L}*/
 void SplitList(List3 L, List3 *L1, List3 *L2);
 
 /*Procedure CopyList(input L1:List3, output L2:List3)
-{I.S.: L1 terdefinisi;  
+{I.S.: L1 terdefinisi;
  F.S.: L2 menjadi salinan L1}*/
 void CopyList(List3 L1, List3 *L2);
 
