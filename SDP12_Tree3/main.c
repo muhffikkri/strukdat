@@ -14,8 +14,6 @@ int main()
       int tinggi, level, nbElm, nbDaun;
 
       // algoritma
-      printf("=== TESTING ADT BINTREE3 ===\n\n");
-
       printf("Membuat pohon W:\n");
       printf("       A\n");
       printf("      / \\\n");
@@ -213,8 +211,6 @@ int main()
       {
             printf("Salah\n");
       }
-
-      printf("\n=== TESTING SELESAI ===\n");
 
       return 0;
 }
